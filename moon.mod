@@ -1,24 +1,13 @@
-// Learn more about moon.mod configuration:
-// https://docs.moonbitlang.com/en/latest/toolchain/moon/module.html
-//
-// To add a dependency, run this command in your terminal:
-//   moon add moonbitlang/x
-//
-// Or manually declare it in `import`, for example:
-// import {
-//   "moonbitlang/x@0.4.6",
-// }
-
 name = "FrozenLemonTee/LunarUnits"
 
 version = "0.1.0"
 
-readme = "README.mbt.md"
+readme = "README.md"
 
-repository = ""
+repository = "https://github.com/FrozenLemonTee/LunarUnits"
 
 license = "Apache-2.0"
 
-keywords = []
+keywords = [ "moonbit", "units", "quantity", "dimension", "science" ]
 
-description = ""
+description = "A type-safe physical quantity and unit system for MoonBit."
