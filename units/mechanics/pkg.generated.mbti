@@ -1,0 +1,52 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/units/mechanics"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Values
+pub let atmosphere : @unit.Un
+
+pub let bar : @unit.Un
+
+pub let calorie : @unit.Un
+
+pub let dyne : @unit.Un
+
+pub let horsepower : @unit.Un
+
+pub let joule : @unit.Un
+
+pub let kilojoule : @unit.Un
+
+pub let kilometer_per_hour : @unit.Un
+
+pub let kilonewton : @unit.Un
+
+pub let kilopascal : @unit.Un
+
+pub let kilowatt : @unit.Un
+
+pub let kilowatt_hour : @unit.Un
+
+pub let meter_per_second : @unit.Un
+
+pub let mile_per_hour : @unit.Un
+
+pub let newton : @unit.Un
+
+pub let pascal : @unit.Un
+
+pub let psi : @unit.Un
+
+pub let watt : @unit.Un
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
