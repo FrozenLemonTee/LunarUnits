@@ -72,6 +72,23 @@ pub fn Monomial::symbol(name : String) -> Monomial {
 }
 
 ///|
+/// Creates a dimensionless monomial holding only the scalar `coeff` (no
+/// symbols). Useful for attaching a numeric factor, e.g. a unit's scale.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = Monomial::scalar(2.5)
+///   assert_eq(m.coefficient(), 2.5)
+///   assert_true(m.is_dimensionless())
+/// }
+/// ```
+pub fn Monomial::scalar(coeff : Double) -> Monomial {
+  { coeff, factors: [] }
+}
+
+///|
 /// Returns the scalar coefficient (the unit layer uses it to carry the scale
 /// factor relative to base units).
 ///
