@@ -1,0 +1,37 @@
+name: Sync to GitLink
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout GitHub repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Push to GitLink
+        env:
+          GITLINK_USERNAME: ${{ secrets.GITLINK_USERNAME }}
+          GITLINK_TOKEN: ${{ secrets.GITLINK_TOKEN }}
+        run: |
+          set -euo pipefail
+
+          git remote add gitlink "https://gitlink.org.cn/FrozenLemonTee/LunarUnits.git"
+
+          git config credential.helper store
+          cat > ~/.git-credentials <<EOF
+          https://${GITLINK_USERNAME}:${GITLINK_TOKEN}@www.gitlink.org.cn
+          EOF
+
+          git push --force gitlink master:master
+          git push --force gitlink --tags
