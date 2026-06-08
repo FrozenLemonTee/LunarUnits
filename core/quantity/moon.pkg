@@ -1,2 +1,12 @@
-// Physical quantity package.
-// This package will depend on the unit layer once implementation starts.
+// Physical quantity package: depends on the unit and dimension layers.
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/core/dimension",
+}
+
+// Doctests construct units and dimensions directly, so both packages must also
+// be importable from black-box tests.
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"
