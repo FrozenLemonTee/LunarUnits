@@ -1,0 +1,34 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/units/electromagnetism"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Values
+pub let ampere_hour : @unit.Un
+
+pub let coulomb : @unit.Un
+
+pub let farad : @unit.Un
+
+pub let henry : @unit.Un
+
+pub let ohm : @unit.Un
+
+pub let siemens : @unit.Un
+
+pub let tesla : @unit.Un
+
+pub let volt : @unit.Un
+
+pub let weber : @unit.Un
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
