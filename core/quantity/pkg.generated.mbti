@@ -1,11 +1,34 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "FrozenLemonTee/LunarUnits/core/quantity"
 
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "moonbitlang/core/debug",
+}
+
 // Values
 
 // Errors
+pub suberror DimensionMismatch
 
 // Types and methods
+pub struct Quantity {
+  v : Double
+  u : @unit.Un
+} derive(Eq, @debug.Debug)
+pub fn Quantity::add(Self, Self) -> Self raise DimensionMismatch
+pub fn Quantity::dimension(Self) -> @dimension.Dimension
+pub fn Quantity::div(Self, Self) -> Self
+pub fn Quantity::mul(Self, Self) -> Self
+pub fn Quantity::new(Double, @unit.Un) -> Self
+pub fn Quantity::pow(Self, Int) -> Self
+pub fn Quantity::scale(Self, Double) -> Self
+pub fn Quantity::sub(Self, Self) -> Self raise DimensionMismatch
+pub fn Quantity::to(Self, @unit.Un) -> Self raise DimensionMismatch
+pub fn Quantity::unit(Self) -> @unit.Un
+pub fn Quantity::value(Self) -> Double
+pub impl Show for Quantity
 
 // Type aliases
 
