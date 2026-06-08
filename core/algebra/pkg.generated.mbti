@@ -31,6 +31,7 @@ pub fn Monomial::mul(Self, Self) -> Self
 pub fn Monomial::one() -> Self
 pub fn Monomial::pow(Self, Int) -> Self
 pub fn Monomial::same_factors(Self, Self) -> Bool
+pub fn Monomial::scalar(Double) -> Self
 pub fn Monomial::symbol(String) -> Self
 pub fn Monomial::terms(Self) -> Array[(String, Int)]
 pub impl Show for Monomial
