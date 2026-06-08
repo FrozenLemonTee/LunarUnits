@@ -1,0 +1,11 @@
+// Geometry unit package: length, area and volume.
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/units/si",
+}
+
+// Doctests and black-box tests refer to dimensions and SI units directly.
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+  "FrozenLemonTee/LunarUnits/units/si",
+} for "test"
