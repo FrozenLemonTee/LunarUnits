@@ -1,0 +1,40 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/units/geometry"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Values
+pub let centimeter : @unit.Un
+
+pub let cubic_meter : @unit.Un
+
+pub let foot : @unit.Un
+
+pub let gallon : @unit.Un
+
+pub let hectare : @unit.Un
+
+pub let inch : @unit.Un
+
+pub let kilometer : @unit.Un
+
+pub let liter : @unit.Un
+
+pub let mile : @unit.Un
+
+pub let milliliter : @unit.Un
+
+pub let millimeter : @unit.Un
+
+pub let square_meter : @unit.Un
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
