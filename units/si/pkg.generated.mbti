@@ -1,7 +1,24 @@
 // Generated using `moon info`, DON'T EDIT IT
 package "FrozenLemonTee/LunarUnits/units/si"
 
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
 // Values
+pub let ampere : @unit.Un
+
+pub let candela : @unit.Un
+
+pub let kelvin : @unit.Un
+
+pub let kilogram : @unit.Un
+
+pub let meter : @unit.Un
+
+pub let mole : @unit.Un
+
+pub let second : @unit.Un
 
 // Errors
 
