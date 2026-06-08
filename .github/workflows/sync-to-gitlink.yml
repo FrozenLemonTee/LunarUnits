@@ -26,12 +26,7 @@ jobs:
         run: |
           set -euo pipefail
 
-          git remote add gitlink "https://gitlink.org.cn/FrozenLemonTee/LunarUnits.git"
-
-          git config credential.helper store
-          cat > ~/.git-credentials <<EOF
-          https://${GITLINK_USERNAME}:${GITLINK_TOKEN}@www.gitlink.org.cn
-          EOF
+          git remote add gitlink "https://${GITLINK_USERNAME}:${GITLINK_TOKEN}@www.gitlink.org.cn/FrozenLemonTee/LunarUnits.git"
 
           git push --force gitlink master:master
           git push --force gitlink --tags
