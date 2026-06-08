@@ -54,6 +54,24 @@ pub fn Monomial::one() -> Monomial {
 }
 
 ///|
+/// Creates the atomic monomial `name^1` with coefficient 1. A convenient way
+/// for upper layers (dimensions, units) to build a single symbol without going
+/// through an `Expr`.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = Monomial::symbol("m")
+///   assert_eq(m.coefficient(), 1.0)
+///   debug_inspect(m.terms(), content="[(\"m\", 1)]")
+/// }
+/// ```
+pub fn Monomial::symbol(name : String) -> Monomial {
+  { coeff: 1.0, factors: [(name, 1)] }
+}
+
+///|
 /// Returns the scalar coefficient (the unit layer uses it to carry the scale
 /// factor relative to base units).
 ///
