@@ -1,0 +1,42 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/core/algebra"
+
+import {
+  "moonbitlang/core/debug",
+}
+
+// Values
+pub fn normalize(Expr) -> Monomial
+
+// Errors
+
+// Types and methods
+pub(all) enum Expr {
+  Scalar(Double)
+  Symbol(String)
+  One
+  Mul(Array[Expr])
+  Pow(Expr, Int)
+} derive(Eq, @debug.Debug)
+
+pub struct Monomial {
+  coeff : Double
+  factors : Array[(String, Int)]
+} derive(Eq, @debug.Debug)
+pub fn Monomial::coefficient(Self) -> Double
+pub fn Monomial::div(Self, Self) -> Self
+pub fn Monomial::inv(Self) -> Self
+pub fn Monomial::is_dimensionless(Self) -> Bool
+pub fn Monomial::mul(Self, Self) -> Self
+pub fn Monomial::one() -> Self
+pub fn Monomial::pow(Self, Int) -> Self
+pub fn Monomial::same_factors(Self, Self) -> Bool
+pub fn Monomial::scalar(Double) -> Self
+pub fn Monomial::symbol(String) -> Self
+pub fn Monomial::terms(Self) -> Array[(String, Int)]
+pub impl Show for Monomial
+
+// Type aliases
+
+// Traits
+

@@ -1,0 +1,10 @@
+// SI base unit package: depends on the core unit and dimension layers.
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/core/dimension",
+}
+
+// Doctests and black-box tests refer to dimensions directly.
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"

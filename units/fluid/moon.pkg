@@ -1,0 +1,10 @@
+// Fluid unit package: dynamic viscosity, kinematic viscosity and permeability.
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/units/si",
+}
+
+// Doctests and black-box tests refer to dimensions directly.
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"

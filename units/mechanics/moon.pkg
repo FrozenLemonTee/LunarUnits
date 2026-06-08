@@ -1,0 +1,12 @@
+// Mechanics unit package: force, pressure, velocity, energy and power.
+// Depends on the core unit layer and the SI base units; non-SI units are
+// defined as scale factors relative to the coherent SI unit.
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/units/si",
+}
+
+// Doctests and black-box tests refer to dimensions directly.
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"

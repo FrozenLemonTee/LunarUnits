@@ -1,0 +1,8 @@
+// Runnable examples for LunarUnits. Each example is a self-checking `test`, so
+// `moon test` runs and verifies them all.
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/units/si",
+  "FrozenLemonTee/LunarUnits/units/geometry",
+  "FrozenLemonTee/LunarUnits/units/mechanics",
+}

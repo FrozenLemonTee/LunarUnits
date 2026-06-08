@@ -1,7 +1,0 @@
-// import {
-//   "FrozenLemonTee/LunarUnits" @lib,
-// }
-
-options(
-  "is-main": true,
-)

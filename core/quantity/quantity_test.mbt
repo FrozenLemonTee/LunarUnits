@@ -1,0 +1,111 @@
+///|
+/// Helper: a fresh metre unit.
+fn meter() -> @unit.Un {
+  @unit.Un::base("m", @dimension.Dimension::length())
+}
+
+///|
+/// Helper: a fresh second unit.
+fn second() -> @unit.Un {
+  @unit.Un::base("s", @dimension.Dimension::time())
+}
+
+///|
+/// Helper: a fresh kilometre unit.
+fn kilometer() -> @unit.Un {
+  @unit.Un::scaled("km", @dimension.Dimension::length(), 1000.0)
+}
+
+///|
+/// A quantity exposes its value, unit and dimension.
+test "accessors" {
+  let length = Quantity::new(5.0, meter())
+  assert_eq(length.value(), 5.0)
+  assert_true(length.dimension().is_same(@dimension.Dimension::length()))
+  assert_eq(length.unit().scale(), 1.0)
+}
+
+///|
+/// Adding same-unit quantities adds their values.
+test "add same unit" {
+  let total = Quantity::new(1.0, meter()).add(Quantity::new(2.0, meter()))
+  assert_eq(total.value(), 3.0)
+}
+
+///|
+/// Adding compatible units converts the other operand into self's unit first.
+test "add converts compatible units" {
+  let total = Quantity::new(1.0, meter()).add(Quantity::new(1.0, kilometer()))
+  assert_eq(total.value(), 1001.0)
+}
+
+///|
+/// Adding incompatible dimensions raises DimensionMismatch.
+test "add incompatible raises" {
+  let result = try? Quantity::new(1.0, meter()).add(
+    Quantity::new(1.0, second()),
+  )
+  assert_true(result is Err(_))
+}
+
+///|
+/// Subtraction works in self's unit.
+test "sub" {
+  let result = Quantity::new(5.0, meter()).sub(Quantity::new(2.0, meter()))
+  assert_eq(result.value(), 3.0)
+}
+
+///|
+/// Conversion preserves the physical magnitude.
+test "to converts value" {
+  let in_m = Quantity::new(2.0, kilometer()).to(meter())
+  assert_eq(in_m.value(), 2000.0)
+}
+
+///|
+/// Conversion to an incompatible unit raises.
+test "to incompatible raises" {
+  let result = try? Quantity::new(1.0, meter()).to(second())
+  assert_true(result is Err(_))
+}
+
+///|
+/// Multiplication composes values and dimensions.
+test "mul composes" {
+  let area = Quantity::new(2.0, meter()).mul(Quantity::new(3.0, meter()))
+  assert_eq(area.value(), 6.0)
+  assert_true(area.dimension().is_same(@dimension.Dimension::length().pow(2)))
+}
+
+///|
+/// Division composes values and dimensions (speed = distance / time).
+test "div composes" {
+  let speed = Quantity::new(10.0, meter()).div(Quantity::new(2.0, second()))
+  assert_eq(speed.value(), 5.0)
+  let expected = @dimension.Dimension::length().div(
+    @dimension.Dimension::time(),
+  )
+  assert_true(speed.dimension().is_same(expected))
+}
+
+///|
+/// Power composes value and dimension.
+test "pow composes" {
+  let volume = Quantity::new(2.0, meter()).pow(3)
+  assert_eq(volume.value(), 8.0)
+  assert_true(volume.dimension().is_same(@dimension.Dimension::length().pow(3)))
+}
+
+///|
+/// Newton's second law: F = m * a, then convert via composite reasoning.
+test "newtons second law" {
+  let kg = @unit.Un::base("kg", @dimension.Dimension::mass())
+  let mass = Quantity::new(2.0, kg)
+  let accel = Quantity::new(3.0, meter().div(second().pow(2)))
+  let force = mass.mul(accel)
+  assert_eq(force.value(), 6.0)
+  let force_dim = @dimension.Dimension::mass()
+    .mul(@dimension.Dimension::length())
+    .div(@dimension.Dimension::time().pow(2))
+  assert_true(force.dimension().is_same(force_dim))
+}

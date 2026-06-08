@@ -1,0 +1,14 @@
+# Normalize line endings to LF for all text files in the repository,
+# regardless of the contributor's OS. This keeps `moon fmt` on Windows from
+# introducing CRLF into tracked files.
+* text=auto eol=lf
+
+# Binary assets must never be touched by line-ending normalization.
+*.pdf binary
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.wasm binary

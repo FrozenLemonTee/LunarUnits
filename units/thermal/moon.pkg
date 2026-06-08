@@ -1,0 +1,12 @@
+// Thermal unit package: heat transfer coefficient, thermal conductivity,
+// specific heat capacity and heat (energy). The base temperature unit is the
+// kelvin in `si`; affine units (°C, °F) need offset support (a later phase).
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/units/si",
+}
+
+// Doctests and black-box tests refer to dimensions directly.
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"

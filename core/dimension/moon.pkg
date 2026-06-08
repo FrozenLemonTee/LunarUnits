@@ -1,0 +1,4 @@
+// Physical dimension package: depends on the algebra layer.
+import {
+  "FrozenLemonTee/LunarUnits/core/algebra",
+}

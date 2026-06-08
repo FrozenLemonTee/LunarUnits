@@ -1,0 +1,30 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/units/fluid"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Values
+pub let centipoise : @unit.Un
+
+pub let centistokes : @unit.Un
+
+pub let darcy : @unit.Un
+
+pub let pascal_second : @unit.Un
+
+pub let poise : @unit.Un
+
+pub let square_meter_per_second : @unit.Un
+
+pub let stokes : @unit.Un
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

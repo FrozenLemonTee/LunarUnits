@@ -1,0 +1,33 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/core/unit"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/algebra",
+  "FrozenLemonTee/LunarUnits/core/dimension",
+  "moonbitlang/core/debug",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct Un {
+  repr : @algebra.Monomial
+  dim : @dimension.Dimension
+} derive(Eq, @debug.Debug)
+pub fn Un::base(String, @dimension.Dimension) -> Self
+pub fn Un::conversion_factor(Self, Self) -> Double?
+pub fn Un::dimension(Self) -> @dimension.Dimension
+pub fn Un::div(Self, Self) -> Self
+pub fn Un::is_compatible(Self, Self) -> Bool
+pub fn Un::mul(Self, Self) -> Self
+pub fn Un::pow(Self, Int) -> Self
+pub fn Un::scale(Self) -> Double
+pub fn Un::scaled(String, @dimension.Dimension, Double) -> Self
+pub impl Show for Un
+
+// Type aliases
+
+// Traits
+
