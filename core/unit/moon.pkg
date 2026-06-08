@@ -1,2 +1,12 @@
-// Unit definition and conversion metadata package.
-// This package will depend on the dimension layer once implementation starts.
+// Unit definition and conversion package: depends on the algebra and
+// dimension layers.
+import {
+  "FrozenLemonTee/LunarUnits/core/algebra",
+  "FrozenLemonTee/LunarUnits/core/dimension",
+}
+
+// Doctests construct dimensions directly, so the dimension package must also be
+// importable from black-box tests.
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"
