@@ -1,0 +1,30 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/units/mass"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Values
+pub let gram : @unit.Un
+
+pub let gram_per_cubic_centimeter : @unit.Un
+
+pub let kilogram_per_cubic_meter : @unit.Un
+
+pub let milligram : @unit.Un
+
+pub let ounce : @unit.Un
+
+pub let pound : @unit.Un
+
+pub let tonne : @unit.Un
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
