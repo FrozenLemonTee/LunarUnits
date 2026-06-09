@@ -39,6 +39,18 @@ pub impl Show for Un with fn output(self, logger) {
 }
 
 ///|
+/// Allows `lhs * rhs` as shorthand for `lhs.mul(rhs)`.
+pub impl Mul for Un with fn mul(self : Un, other : Un) -> Un {
+  { repr: self.repr.mul(other.repr), dim: self.dim.mul(other.dim) }
+}
+
+///|
+/// Allows `lhs / rhs` as shorthand for `lhs.div(rhs)`.
+pub impl Div for Un with fn div(self : Un, other : Un) -> Un {
+  { repr: self.repr.div(other.repr), dim: self.dim.div(other.dim) }
+}
+
+///|
 /// Defines a coherent base unit (scale 1) with the given symbol and dimension.
 ///
 /// # Example

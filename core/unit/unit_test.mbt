@@ -28,6 +28,21 @@ test "composite unit combines scale and dimension" {
 }
 
 ///|
+/// Multiplication and division operators are shorthands for unit algebra.
+test "operators compose units" {
+  let m = Un::base("m", @dimension.Dimension::length())
+  let s = Un::base("s", @dimension.Dimension::time())
+  let mps = m / s
+  assert_eq(mps, m.div(s))
+  assert_true(
+    mps
+    .dimension()
+    .is_same(@dimension.Dimension::length() / @dimension.Dimension::time()),
+  )
+  assert_eq(m * m, m.pow(2))
+}
+
+///|
 /// Powers compose dimensions: m^3 is a volume.
 test "power composes dimension" {
   let m = Un::base("m", @dimension.Dimension::length())
