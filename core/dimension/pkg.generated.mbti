@@ -27,6 +27,8 @@ pub fn Dimension::mul(Self, Self) -> Self
 pub fn Dimension::pow(Self, Int) -> Self
 pub fn Dimension::temperature() -> Self
 pub fn Dimension::time() -> Self
+pub impl Div for Dimension
+pub impl Mul for Dimension
 pub impl Show for Dimension
 
 // Type aliases

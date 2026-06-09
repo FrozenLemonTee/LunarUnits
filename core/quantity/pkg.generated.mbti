@@ -28,6 +28,9 @@ pub fn Quantity::sub(Self, Self) -> Self raise DimensionMismatch
 pub fn Quantity::to(Self, @unit.Un) -> Self raise DimensionMismatch
 pub fn Quantity::unit(Self) -> @unit.Un
 pub fn Quantity::value(Self) -> Double
+pub impl Div for Quantity
+pub impl Mul for Quantity
+pub impl Neg for Quantity
 pub impl Show for Quantity
 
 // Type aliases

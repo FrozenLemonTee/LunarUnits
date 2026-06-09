@@ -38,12 +38,12 @@ let distance = @quantity.Quantity::new(100.0, @si.meter)
 let time = @quantity.Quantity::new(10.0, @si.second)
 
 // 运算会自动组合单位。
-let speed = distance.div(time) // 10 m/s
+let speed = distance / time // 10 m/s
 
 // 牛顿第二定律：F = m * a。
 let mass = @quantity.Quantity::new(2.0, @si.kilogram)
-let acceleration = @quantity.Quantity::new(3.0, @si.meter.div(@si.second.pow(2)))
-let force = mass.mul(acceleration) // 6 N
+let acceleration = @quantity.Quantity::new(3.0, @si.meter / @si.second.pow(2))
+let force = mass * acceleration // 6 N
 
 // 同量纲换算保持物理量大小不变。
 let in_meters = @quantity.Quantity::new(2.0, @geometry.kilometer).to(@si.meter)
@@ -64,7 +64,7 @@ LunarUnits 采用单向依赖的分层结构；上层依赖下层，反之绝不
 1. **`core/algebra`** —— 最小化的规范化符号代数。由于单位与量纲只会做乘、除和整数幂，这套代数就是符号上的自由阿贝尔群：每个表达式都规范化为唯一的**单项式**（一个系数乘以若干 `symbol^exponent` 项的乘积）。这让比较、化简和规范排序都自动成立。
 2. **`core/dimension`** —— 用单项式表达七个 SI 基本量纲（长度、质量、时间、电流、温度、物质的量、发光强度）。两个量纲相等当且仅当它们的指数向量相同，这是量纲检查的基础。
 3. **`core/unit`** —— `Un`，单位符号单项式与一个量纲的组合。系数承载相对相干 SI 单位的缩放因子，因此复合单位（如 m/s）和换算都由代数自动推导得出。
-4. **`core/quantity`** —— `Quantity`，数值加单位。加减法和换算会做量纲检查；乘除法组合单位。
+4. **`core/quantity`** —— `Quantity`，数值加单位。加减法和换算会做量纲检查；乘除法组合单位。`Dimension`、`Un` 和 `Quantity` 支持 `*` 与 `/` 作为总是合法的代数组合语法糖；整数幂继续通过 `.pow(n)` 显式表达。
 
 错误处理遵循刻意的分层：底层**查询**返回 `Option`（如 `Un::conversion_factor`），而上层**操作**用 raise（`Quantity::add`/`sub`/`to` 在量纲不匹配时 raise `DimensionMismatch`）。
 

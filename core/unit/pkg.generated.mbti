@@ -25,6 +25,8 @@ pub fn Un::mul(Self, Self) -> Self
 pub fn Un::pow(Self, Int) -> Self
 pub fn Un::scale(Self) -> Double
 pub fn Un::scaled(String, @dimension.Dimension, Double) -> Self
+pub impl Div for Un
+pub impl Mul for Un
 pub impl Show for Un
 
 // Type aliases

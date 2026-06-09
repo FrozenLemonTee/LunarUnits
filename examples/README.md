@@ -2,6 +2,8 @@
 
 Runnable, self-checking examples for LunarUnits. Each example is a `test` in
 [`examples.mbt`](examples.mbt), so `moon test` runs and verifies them all.
+The examples use `*` and `/` for total unit and quantity composition, while
+dimension-checked addition remains explicit through `.add(...)`.
 
 Covered:
 

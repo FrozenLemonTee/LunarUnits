@@ -49,12 +49,12 @@ let distance = @quantity.Quantity::new(100.0, @si.meter)
 let time = @quantity.Quantity::new(10.0, @si.second)
 
 // Arithmetic composes units automatically.
-let speed = distance.div(time) // 10 m/s
+let speed = distance / time // 10 m/s
 
 // Newton's second law: F = m * a.
 let mass = @quantity.Quantity::new(2.0, @si.kilogram)
-let acceleration = @quantity.Quantity::new(3.0, @si.meter.div(@si.second.pow(2)))
-let force = mass.mul(acceleration) // 6 N
+let acceleration = @quantity.Quantity::new(3.0, @si.meter / @si.second.pow(2))
+let force = mass * acceleration // 6 N
 
 // Same-dimension conversion keeps the physical magnitude.
 let in_meters = @quantity.Quantity::new(2.0, @geometry.kilometer).to(@si.meter)
@@ -88,7 +88,8 @@ layers, never the other way around.
    units (e.g. m/s) and conversions fall out of the algebra automatically.
 4. **`core/quantity`** — `Quantity`, a value plus a unit. Addition/subtraction
    and conversion are dimensionally checked; multiplication and division compose
-   units.
+   units. `Dimension`, `Un`, and `Quantity` support `*` and `/` as shorthand for
+   total algebraic composition; integer powers remain explicit via `.pow(n)`.
 
 Error handling follows a deliberate split: low-level *queries* return `Option`
 (e.g. `Un::conversion_factor`), while higher-level *operations* raise

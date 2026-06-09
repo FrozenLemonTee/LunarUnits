@@ -36,6 +36,26 @@ pub impl Show for Quantity with fn output(self, logger) {
 }
 
 ///|
+/// Allows `lhs * rhs` as shorthand for `lhs.mul(rhs)`. Quantity multiplication
+/// is total: it always composes values and units without dimensional rejection.
+pub impl Mul for Quantity with fn mul(self : Quantity, other : Quantity) -> Quantity {
+  { v: self.v * other.v, u: self.u.mul(other.u) }
+}
+
+///|
+/// Allows `lhs / rhs` as shorthand for `lhs.div(rhs)`. Quantity division is
+/// total: it always composes values and units without dimensional rejection.
+pub impl Div for Quantity with fn div(self : Quantity, other : Quantity) -> Quantity {
+  { v: self.v / other.v, u: self.u.div(other.u) }
+}
+
+///|
+/// Allows unary `-quantity`, negating the value while preserving the unit.
+pub impl Neg for Quantity with fn neg(self : Quantity) -> Quantity {
+  { v: -self.v, u: self.u }
+}
+
+///|
 /// Integer power of a `Double` without the rounding error of a floating-point
 /// `pow` on integer exponents.
 fn double_pow(base : Double, n : Int) -> Double {

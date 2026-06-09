@@ -78,6 +78,30 @@ test "mul composes" {
 }
 
 ///|
+/// Multiplication and division operators are shorthands for total quantity
+/// composition. Addition and subtraction stay as explicit raising methods.
+test "operators compose quantities" {
+  let distance = Quantity::new(10.0, meter())
+  let time = Quantity::new(2.0, second())
+  let speed = distance / time
+  assert_eq(speed, distance.div(time))
+  assert_eq(speed.value(), 5.0)
+  let area = distance * Quantity::new(3.0, meter())
+  assert_eq(area.value(), 30.0)
+  assert_true(area.dimension().is_same(@dimension.Dimension::length().pow(2)))
+}
+
+///|
+/// Unary negation flips the value while preserving the unit and dimension.
+test "neg preserves unit" {
+  let distance = Quantity::new(10.0, meter())
+  let negated = -distance
+  assert_eq(negated.value(), -10.0)
+  assert_eq(negated.unit(), distance.unit())
+  assert_true(negated.dimension().is_same(distance.dimension()))
+}
+
+///|
 /// Division composes values and dimensions (speed = distance / time).
 test "div composes" {
   let speed = Quantity::new(10.0, meter()).div(Quantity::new(2.0, second()))

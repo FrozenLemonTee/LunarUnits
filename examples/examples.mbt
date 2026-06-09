@@ -8,7 +8,7 @@
 test "speed = distance / time" {
   let distance = @quantity.Quantity::new(100.0, @si.meter)
   let time = @quantity.Quantity::new(10.0, @si.second)
-  let speed = distance.div(time)
+  let speed = distance / time
   assert_eq(speed.value(), 10.0)
   assert_true(speed.unit().is_compatible(@mechanics.meter_per_second))
 }
@@ -18,7 +18,7 @@ test "speed = distance / time" {
 test "acceleration = velocity / time" {
   let velocity = @quantity.Quantity::new(30.0, @mechanics.meter_per_second)
   let time = @quantity.Quantity::new(5.0, @si.second)
-  let acceleration = velocity.div(time)
+  let acceleration = velocity / time
   assert_eq(acceleration.value(), 6.0)
 }
 
@@ -27,11 +27,8 @@ test "acceleration = velocity / time" {
 /// a force whose unit is compatible with the newton.
 test "force = mass * acceleration" {
   let mass = @quantity.Quantity::new(2.0, @si.kilogram)
-  let acceleration = @quantity.Quantity::new(
-    3.0,
-    @si.meter.div(@si.second.pow(2)),
-  )
-  let force = mass.mul(acceleration)
+  let acceleration = @quantity.Quantity::new(3.0, @si.meter / @si.second.pow(2))
+  let force = mass * acceleration
   assert_eq(force.value(), 6.0)
   assert_true(force.unit().is_compatible(@mechanics.newton))
 }
@@ -41,7 +38,7 @@ test "force = mass * acceleration" {
 test "work = force * distance" {
   let force = @quantity.Quantity::new(10.0, @mechanics.newton)
   let distance = @quantity.Quantity::new(5.0, @si.meter)
-  let work = force.mul(distance)
+  let work = force * distance
   assert_eq(work.value(), 50.0)
   assert_true(work.unit().is_compatible(@mechanics.joule))
 }

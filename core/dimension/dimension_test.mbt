@@ -26,6 +26,18 @@ test "velocity and acceleration" {
 }
 
 ///|
+/// Multiplication and division operators are shorthands for dimension algebra.
+test "operators compose dimensions" {
+  let velocity = Dimension::length() / Dimension::time()
+  let acceleration = velocity / Dimension::time()
+  assert_eq(acceleration, Dimension::length() / Dimension::time().pow(2))
+  assert_eq(
+    Dimension::mass() * acceleration,
+    Dimension::mass().mul(acceleration),
+  )
+}
+
+///|
 /// Force = mass * acceleration; energy = force * length. Built two ways they
 /// must agree.
 test "force and energy compose" {

@@ -30,6 +30,18 @@ pub impl Show for Dimension with fn output(self, logger) {
 }
 
 ///|
+/// Allows `lhs * rhs` as shorthand for `lhs.mul(rhs)`.
+pub impl Mul for Dimension with fn mul(self : Dimension, other : Dimension) -> Dimension {
+  { repr: self.repr.mul(other.repr) }
+}
+
+///|
+/// Allows `lhs / rhs` as shorthand for `lhs.div(rhs)`.
+pub impl Div for Dimension with fn div(self : Dimension, other : Dimension) -> Dimension {
+  { repr: self.repr.div(other.repr) }
+}
+
+///|
 /// Builds a base dimension from its single-letter tag.
 fn base(symbol : String) -> Dimension {
   { repr: @algebra.Monomial::symbol(symbol) }
