@@ -1,0 +1,34 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/quantities/qelectromagnetism"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub fn ampere_hours(Double) -> @quantity.Quantity
+
+pub fn coulombs(Double) -> @quantity.Quantity
+
+pub fn farads(Double) -> @quantity.Quantity
+
+pub fn henries(Double) -> @quantity.Quantity
+
+pub fn ohms(Double) -> @quantity.Quantity
+
+pub fn siemens(Double) -> @quantity.Quantity
+
+pub fn teslas(Double) -> @quantity.Quantity
+
+pub fn volts(Double) -> @quantity.Quantity
+
+pub fn webers(Double) -> @quantity.Quantity
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

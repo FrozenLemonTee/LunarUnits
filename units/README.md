@@ -3,6 +3,9 @@
 The `units` area is reserved for built-in unit packages.
 
 - `si`: SI base units for the MVP.
-- `derived`: common derived units after the base unit model is stable.
+- domain packages such as `geometry`, `mechanics`, `fluid`, `thermal` and
+  `electromagnetism`: common coherent and non-SI units grouped by physical
+  domain.
 
-Custom registration and broader engineering units belong to later milestones.
+Quantity constructors live in `quantities/*`. Custom registration and broader
+engineering units belong to later milestones.

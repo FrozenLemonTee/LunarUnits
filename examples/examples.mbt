@@ -6,7 +6,7 @@
 /// Speed is distance divided by time. Dividing quantities composes their units,
 /// giving a result in metres per second.
 test "speed = distance / time" {
-  let distance = @quantity.Quantity::new(100.0, @si.meter)
+  let distance = @qgeometry.meters(100.0)
   let time = @quantity.Quantity::new(10.0, @si.second)
   let speed = distance / time
   assert_eq(speed.value(), 10.0)
@@ -16,7 +16,7 @@ test "speed = distance / time" {
 ///|
 /// Acceleration is a change in velocity over time.
 test "acceleration = velocity / time" {
-  let velocity = @quantity.Quantity::new(30.0, @mechanics.meter_per_second)
+  let velocity = @qmechanics.meters_per_second(30.0)
   let time = @quantity.Quantity::new(5.0, @si.second)
   let acceleration = velocity / time
   assert_eq(acceleration.value(), 6.0)
@@ -36,8 +36,8 @@ test "force = mass * acceleration" {
 ///|
 /// Work (energy) is force times distance.
 test "work = force * distance" {
-  let force = @quantity.Quantity::new(10.0, @mechanics.newton)
-  let distance = @quantity.Quantity::new(5.0, @si.meter)
+  let force = @qmechanics.newtons(10.0)
+  let distance = @qgeometry.meters(5.0)
   let work = force * distance
   assert_eq(work.value(), 50.0)
   assert_true(work.unit().is_compatible(@mechanics.joule))
@@ -46,7 +46,7 @@ test "work = force * distance" {
 ///|
 /// Same-dimension conversion: 2 kilometres expressed in metres.
 test "convert 2 km to metres" {
-  let distance = @quantity.Quantity::new(2.0, @geometry.kilometer)
+  let distance = @qgeometry.kilometers(2.0)
   let in_meters = distance.to(@si.meter)
   assert_eq(in_meters.value(), 2000.0)
 }

@@ -1,0 +1,32 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/quantities/qmass"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub fn grams(Double) -> @quantity.Quantity
+
+pub fn grams_per_cubic_centimeter(Double) -> @quantity.Quantity
+
+pub fn kilograms(Double) -> @quantity.Quantity
+
+pub fn kilograms_per_cubic_meter(Double) -> @quantity.Quantity
+
+pub fn milligrams(Double) -> @quantity.Quantity
+
+pub fn ounces(Double) -> @quantity.Quantity
+
+pub fn pounds(Double) -> @quantity.Quantity
+
+pub fn tonnes(Double) -> @quantity.Quantity
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

@@ -1,0 +1,9 @@
+// Convenience quantity constructors for mechanics units.
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/units/mechanics",
+}
+
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"

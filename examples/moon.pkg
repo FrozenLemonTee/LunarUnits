@@ -3,6 +3,7 @@
 import {
   "FrozenLemonTee/LunarUnits/core/quantity",
   "FrozenLemonTee/LunarUnits/units/si",
-  "FrozenLemonTee/LunarUnits/units/geometry",
   "FrozenLemonTee/LunarUnits/units/mechanics",
+  "FrozenLemonTee/LunarUnits/quantities/qgeometry",
+  "FrozenLemonTee/LunarUnits/quantities/qmechanics",
 }

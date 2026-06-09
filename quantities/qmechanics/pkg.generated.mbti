@@ -1,0 +1,52 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/quantities/qmechanics"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub fn atmospheres(Double) -> @quantity.Quantity
+
+pub fn bars(Double) -> @quantity.Quantity
+
+pub fn calories(Double) -> @quantity.Quantity
+
+pub fn dynes(Double) -> @quantity.Quantity
+
+pub fn horsepower(Double) -> @quantity.Quantity
+
+pub fn joules(Double) -> @quantity.Quantity
+
+pub fn kilojoules(Double) -> @quantity.Quantity
+
+pub fn kilometers_per_hour(Double) -> @quantity.Quantity
+
+pub fn kilonewtons(Double) -> @quantity.Quantity
+
+pub fn kilopascals(Double) -> @quantity.Quantity
+
+pub fn kilowatt_hours(Double) -> @quantity.Quantity
+
+pub fn kilowatts(Double) -> @quantity.Quantity
+
+pub fn meters_per_second(Double) -> @quantity.Quantity
+
+pub fn miles_per_hour(Double) -> @quantity.Quantity
+
+pub fn newtons(Double) -> @quantity.Quantity
+
+pub fn pascals(Double) -> @quantity.Quantity
+
+pub fn psi(Double) -> @quantity.Quantity
+
+pub fn watts(Double) -> @quantity.Quantity
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

@@ -1,0 +1,42 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/quantities/qgeometry"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub fn centimeters(Double) -> @quantity.Quantity
+
+pub fn cubic_meters(Double) -> @quantity.Quantity
+
+pub fn feet(Double) -> @quantity.Quantity
+
+pub fn gallons(Double) -> @quantity.Quantity
+
+pub fn hectares(Double) -> @quantity.Quantity
+
+pub fn inches(Double) -> @quantity.Quantity
+
+pub fn kilometers(Double) -> @quantity.Quantity
+
+pub fn liters(Double) -> @quantity.Quantity
+
+pub fn meters(Double) -> @quantity.Quantity
+
+pub fn miles(Double) -> @quantity.Quantity
+
+pub fn milliliters(Double) -> @quantity.Quantity
+
+pub fn millimeters(Double) -> @quantity.Quantity
+
+pub fn square_meters(Double) -> @quantity.Quantity
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
