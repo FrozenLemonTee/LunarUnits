@@ -1,6 +1,6 @@
 name = "FrozenLemonTee/LunarUnits"
 
-version = "0.1.0"
+version = "0.1.1"
 
 readme = "README.md"
 
@@ -10,4 +10,4 @@ license = "Apache-2.0"
 
 keywords = [ "moonbit", "units", "quantity", "dimension", "science" ]
 
-description = "A type-safe physical quantity and unit system for MoonBit."
+description = "A runtime dimension-checked physical quantity and unit system for MoonBit."

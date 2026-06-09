@@ -2,15 +2,17 @@
 
 **English** | [简体中文](README_zh.md)
 
-LunarUnits is a type-safe physical quantity and unit system for
+LunarUnits is a runtime dimension-checked physical quantity and unit system for
 [MoonBit](https://www.moonbitlang.com). It helps engineering, scientific,
 teaching and data-processing code avoid unit errors by modelling dimensions and
 unit conversions explicitly.
 
 Unit mistakes are a common source of bugs in scientific and engineering
 computation. LunarUnits attaches a unit to every value, checks dimensional
-consistency on every operation, and rejects nonsensical combinations (such as
-adding a length to a time) instead of silently producing wrong numbers.
+consistency during operations, and rejects nonsensical combinations (such as
+adding a length to a time) instead of silently producing wrong numbers. The MVP
+performs these checks at runtime rather than through a compile-time dimensional
+type system.
 
 ## Features
 
@@ -20,7 +22,8 @@ adding a length to a time) instead of silently producing wrong numbers.
   (geometry, mass, mechanics, fluid, thermal, electromagnetism).
 - Addition, subtraction, multiplication, division and integer powers, with
   units composed automatically.
-- Same-dimension conversion, and rejection of dimensionally invalid operations.
+- Same-dimension conversion, and runtime rejection of dimensionally invalid
+  operations.
 - Every public API ships with a runnable documentation example.
 
 ## Installation
