@@ -1,0 +1,24 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/quantities/qthermal"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub fn british_thermal_units(Double) -> @quantity.Quantity
+
+pub fn joules_per_kilogram_kelvin(Double) -> @quantity.Quantity
+
+pub fn watts_per_meter_kelvin(Double) -> @quantity.Quantity
+
+pub fn watts_per_square_meter_kelvin(Double) -> @quantity.Quantity
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

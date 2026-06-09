@@ -1,0 +1,30 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/quantities/qsi"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub fn amperes(Double) -> @quantity.Quantity
+
+pub fn candelas(Double) -> @quantity.Quantity
+
+pub fn kelvins(Double) -> @quantity.Quantity
+
+pub fn kilograms(Double) -> @quantity.Quantity
+
+pub fn meters(Double) -> @quantity.Quantity
+
+pub fn moles(Double) -> @quantity.Quantity
+
+pub fn seconds(Double) -> @quantity.Quantity
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
