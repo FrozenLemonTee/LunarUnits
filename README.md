@@ -24,6 +24,7 @@ type system.
   units composed automatically.
 - Same-dimension conversion, and runtime rejection of dimensionally invalid
   operations.
+- Convenience quantity constructors for built-in unit domains.
 - Every public API ships with a runnable documentation example.
 
 ## Installation
@@ -38,14 +39,16 @@ Then import the packages you need in your `moon.pkg`, for example:
 import {
   "FrozenLemonTee/LunarUnits/core/quantity",
   "FrozenLemonTee/LunarUnits/units/si",
+  "FrozenLemonTee/LunarUnits/quantities/qgeometry",
+  "FrozenLemonTee/LunarUnits/quantities/qmechanics",
 }
 ```
 
 ## Quick start
 
 ```moonbit
-// Build quantities from a value and a unit.
-let distance = @quantity.Quantity::new(100.0, @si.meter)
+// Build quantities with convenience constructors or directly from a unit.
+let distance = @qgeometry.meters(100.0)
 let time = @quantity.Quantity::new(10.0, @si.second)
 
 // Arithmetic composes units automatically.
@@ -57,8 +60,11 @@ let acceleration = @quantity.Quantity::new(3.0, @si.meter / @si.second.pow(2))
 let force = mass * acceleration // 6 N
 
 // Same-dimension conversion keeps the physical magnitude.
-let in_meters = @quantity.Quantity::new(2.0, @geometry.kilometer).to(@si.meter)
+let in_meters = @qgeometry.kilometers(2.0).to(@si.meter)
 // in_meters.value() == 2000.0
+
+// Domain constructors are just shorthand for Quantity::new(value, unit).
+let load = @qmechanics.newtons(6.0)
 
 // Dimensionally invalid operations are rejected: `add`/`sub`/`to` raise
 // `DimensionMismatch` when the dimensions do not match.
@@ -115,6 +121,14 @@ units/
   fluid        dynamic/kinematic viscosity, permeability
   thermal      heat transfer coefficient, conductivity, specific heat, heat
   electromagnetism  charge, voltage, resistance, capacitance, inductance, flux
+quantities/
+  qsi          SI base quantity constructors
+  qgeometry    geometry quantity constructors
+  qmass        mass and density quantity constructors
+  qmechanics   mechanics quantity constructors
+  qfluid       fluid quantity constructors
+  qthermal     thermal quantity constructors
+  qelectromagnetism  electrical and magnetic quantity constructors
 examples/      runnable, self-checking examples
 docs/          design and roadmap notes
 ```

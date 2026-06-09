@@ -11,9 +11,14 @@ The MVP core follows a layered model:
 2. Dimension layer for physical dimension relations.
 3. Unit layer for unit definitions and conversion metadata.
 4. Quantity layer for numeric values with unit references.
+5. Optional convenience layers for built-in units and quantity constructors.
 
 The dependency direction should stay one-way. Higher layers may depend on lower
 layers, but lower layers should not know about higher-level concepts.
+
+The `units/*` packages expose unit values (`Un`). The `quantities/*` packages
+expose convenience constructors that return `Quantity`; they do not introduce
+new quantity types or change the runtime dimension-checking model.
 
 ## Operator Policy
 
