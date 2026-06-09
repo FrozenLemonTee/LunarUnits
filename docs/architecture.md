@@ -1,7 +1,7 @@
 # LunarUnits Architecture
 
-This document records the initial package structure before implementation code
-is added.
+This document records the current MVP package structure and the public API
+boundaries that should stay stable as the project grows.
 
 ## Core Direction
 
@@ -14,6 +14,22 @@ The MVP core follows a layered model:
 
 The dependency direction should stay one-way. Higher layers may depend on lower
 layers, but lower layers should not know about higher-level concepts.
+
+## Operator Policy
+
+LunarUnits uses operators only where the operation is total and has the same
+meaning as the underlying algebra:
+
+- `Dimension`, `Un`, and `Quantity` support `*` and `/` as shorthand for
+  `.mul(...)` and `.div(...)`.
+- `Quantity` supports unary `-`, which negates the numeric value and keeps the
+  unit unchanged.
+- Integer powers remain explicit through `.pow(n)` because MoonBit's `^`
+  operator currently maps to a same-type bitwise-xor trait rather than
+  `Self ^ Int`.
+- `Quantity` addition, subtraction, and conversion remain explicit methods
+  (`.add(...)`, `.sub(...)`, `.to(...)`) because they may raise
+  `DimensionMismatch`.
 
 ## MVP Boundary
 
