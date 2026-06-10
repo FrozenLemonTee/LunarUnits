@@ -31,12 +31,30 @@ pub impl Show for Dimension with fn output(self, logger) {
 
 ///|
 /// Allows `lhs * rhs` as shorthand for `lhs.mul(rhs)`.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let area = Dimension::length() * Dimension::length()
+///   assert_eq(area, Dimension::length().pow(2))
+/// }
+/// ```
 pub impl Mul for Dimension with fn mul(self : Dimension, other : Dimension) -> Dimension {
   { repr: self.repr.mul(other.repr) }
 }
 
 ///|
 /// Allows `lhs / rhs` as shorthand for `lhs.div(rhs)`.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let velocity = Dimension::length() / Dimension::time()
+///   assert_eq(velocity, Dimension::length().div(Dimension::time()))
+/// }
+/// ```
 pub impl Div for Dimension with fn div(self : Dimension, other : Dimension) -> Dimension {
   { repr: self.repr.div(other.repr) }
 }

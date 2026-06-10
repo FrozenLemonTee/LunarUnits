@@ -24,10 +24,11 @@ You can browse and install extra skills here:
 - Try to keep deprecated blocks in file called `deprecated.mbt` in each
   directory.
 
-## Documentation and style
+## Source documentation and style
 
-- Project documentation and ordinary source comments should be written in
-  English for consistency.
+- Inline documentation and ordinary comments in `.mbt` source files should be
+  written in English for consistency. This rule does not restrict standalone
+  project documents such as README files.
 
 - Every public API must include runnable documentation examples where practical,
   following MoonBit doc-test style.
