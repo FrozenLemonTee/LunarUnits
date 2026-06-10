@@ -1,5 +1,7 @@
 # LunarUnits
 
+[![CI](https://github.com/FrozenLemonTee/LunarUnits/actions/workflows/ci.yml/badge.svg)](https://github.com/FrozenLemonTee/LunarUnits/actions/workflows/ci.yml)
+
 **English** | [简体中文](README_zh.md)
 
 LunarUnits is a runtime dimension-checked physical quantity and unit system for
