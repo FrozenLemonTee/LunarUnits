@@ -3,9 +3,16 @@
 The `units` area is reserved for built-in unit packages.
 
 - `si`: SI base units for the MVP.
+- `angle`: plane angle units such as radian, degree, turn, arcminute and
+  arcsecond.
 - domain packages such as `geometry`, `mechanics`, `fluid`, `thermal` and
   `electromagnetism`: common coherent and non-SI units grouped by physical
   domain.
+- `information`: information units such as bit, byte, KB, GB, KiB and MiB.
+- `solid_angle`: solid angle units such as steradian, square degree and spat.
+- `currency`: same-currency units such as dollar, cent, k$ and M$
+  (cross-currency rates are injected by the caller, not built in).
+- `count`: discrete-count units such as each, dozen and gross.
 
 Quantity constructors live in `quantities/*`. Custom registration and broader
 engineering units belong to later milestones.
