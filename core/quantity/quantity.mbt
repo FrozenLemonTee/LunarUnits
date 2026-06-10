@@ -481,3 +481,20 @@ pub fn Quantity::pow(self : Quantity, n : Int) -> Quantity {
 pub fn Quantity::scale(self : Quantity, factor : Double) -> Quantity {
   { v: self.v * factor, u: self.u }
 }
+
+///|
+/// Formats a quantity as `<value> <unit>` using compact ASCII unit notation.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let meter = @unit.Un::base("m", @dimension.Dimension::length())
+///   let second = @unit.Un::base("s", @dimension.Dimension::time())
+///   let acceleration = Quantity::new(9.8, meter / second.pow(2))
+///   assert_eq(format_quantity(acceleration), "9.8 m/s^2")
+/// }
+/// ```
+pub fn format_quantity(quantity : Quantity) -> String {
+  "\{quantity.value()} \{@unit.format_unit(quantity.unit())}"
+}

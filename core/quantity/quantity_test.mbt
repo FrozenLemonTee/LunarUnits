@@ -190,3 +190,10 @@ test "newtons second law" {
     .div(@dimension.Dimension::time().pow(2))
   assert_true(force.dimension().is_same(force_dim))
 }
+
+///|
+/// Quantity formatter combines the value with ASCII unit formatting.
+test "format quantity ascii" {
+  let acceleration = Quantity::new(9.8, meter() / second().pow(2))
+  assert_eq(format_quantity(acceleration), "9.8 m/s^2")
+}

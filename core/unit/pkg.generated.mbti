@@ -8,6 +8,7 @@ import {
 }
 
 // Values
+pub fn format_unit(Un) -> String
 
 // Errors
 

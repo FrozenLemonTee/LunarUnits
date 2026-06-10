@@ -100,3 +100,16 @@ test "velocity unit structure snapshot" {
     ),
   )
 }
+
+///|
+/// ASCII formatter separates numerator and denominator exponents.
+test "format unit ascii" {
+  let m = Un::base("m", @dimension.Dimension::length())
+  let s = Un::base("s", @dimension.Dimension::time())
+  let kg = Un::base("kg", @dimension.Dimension::mass())
+  assert_eq(format_unit(m / s.pow(2)), "m/s^2")
+  assert_eq(format_unit(kg * m / s.pow(2)), "kg*m/s^2")
+  assert_eq(format_unit(m.pow(2)), "m^2")
+  assert_eq(format_unit(m / (kg * s.pow(2))), "m/(kg*s^2)")
+  assert_eq(format_unit(m / m), "1")
+}

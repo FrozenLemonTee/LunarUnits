@@ -8,6 +8,7 @@ import {
 }
 
 // Values
+pub fn format_quantity(Quantity) -> String
 
 // Errors
 pub suberror DimensionMismatch {
