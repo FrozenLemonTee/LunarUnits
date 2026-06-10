@@ -56,17 +56,17 @@ test "checked add" {
 ///|
 /// Adding incompatible dimensions raises DimensionMismatch.
 test "add incompatible raises" {
-  let result = try? Quantity::new(1.0, meter()).add(
-    Quantity::new(1.0, second()),
-  )
-  assert_true(result is Err(_))
-  match result {
-    Err(DimensionMismatch((expected, actual))) => {
+  let mut caught = false
+  try
+    Quantity::new(1.0, meter()).add(Quantity::new(1.0, second())) |> ignore
+  catch {
+    DimensionMismatch((expected, actual)) => {
+      caught = true
       assert_true(expected.is_same(@dimension.Dimension::length()))
       assert_true(actual.is_same(@dimension.Dimension::time()))
     }
-    _ => fail("expected DimensionMismatch")
   }
+  assert_true(caught)
 }
 
 ///|
@@ -115,15 +115,15 @@ test "checked to" {
 ///|
 /// Conversion to an incompatible unit raises.
 test "to incompatible raises" {
-  let result = try? Quantity::new(1.0, meter()).to(second())
-  assert_true(result is Err(_))
-  match result {
-    Err(DimensionMismatch((expected, actual))) => {
+  let mut caught = false
+  try Quantity::new(1.0, meter()).to(second()) |> ignore catch {
+    DimensionMismatch((expected, actual)) => {
+      caught = true
       assert_true(expected.is_same(@dimension.Dimension::time()))
       assert_true(actual.is_same(@dimension.Dimension::length()))
     }
-    _ => fail("expected DimensionMismatch")
   }
+  assert_true(caught)
 }
 
 ///|

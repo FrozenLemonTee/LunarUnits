@@ -10,14 +10,15 @@
 /// test {
 ///   let m = @unit.Un::base("m", @dimension.Dimension::length())
 ///   let s = @unit.Un::base("s", @dimension.Dimension::time())
-///   let result = try? Quantity::new(1.0, m).to(s)
-///   match result {
-///     Err(DimensionMismatch((expected, actual))) => {
+///   let mut caught = false
+///   try Quantity::new(1.0, m).to(s) |> ignore catch {
+///     DimensionMismatch((expected, actual)) => {
+///       caught = true
 ///       assert_true(expected.is_same(@dimension.Dimension::time()))
 ///       assert_true(actual.is_same(@dimension.Dimension::length()))
 ///     }
-///     _ => fail("expected DimensionMismatch")
 ///   }
+///   assert_true(caught)
 /// }
 /// ```
 pub suberror DimensionMismatch {
@@ -258,9 +259,9 @@ pub fn Quantity::checked_to(self : Quantity, target : @unit.Un) -> Quantity? {
 ///   let km = @unit.Un::scaled("km", @dimension.Dimension::length(), 1000.0)
 ///   let in_m = Quantity::new(1.0, km).to(m)
 ///   assert_eq(in_m.value(), 1000.0)
-///   // Converting to an incompatible unit raises.
+///   // An incompatible target unit is rejected (checked_to returns None).
 ///   let s = @unit.Un::base("s", @dimension.Dimension::time())
-///   assert_true((try? Quantity::new(1.0, m).to(s)) is Err(_))
+///   assert_true(Quantity::new(1.0, m).checked_to(s) is None)
 /// }
 /// ```
 pub fn Quantity::to(
@@ -329,9 +330,9 @@ pub fn Quantity::checked_add(self : Quantity, other : Quantity) -> Quantity? {
 ///   // 1 m + 1 km = 1001 m (result in self's unit).
 ///   let total = Quantity::new(1.0, m).add(Quantity::new(1.0, km))
 ///   assert_eq(total.value(), 1001.0)
-///   // Adding incompatible dimensions raises.
+///   // Adding incompatible dimensions is rejected (checked_add returns None).
 ///   let s = @unit.Un::base("s", @dimension.Dimension::time())
-///   assert_true((try? Quantity::new(1.0, m).add(Quantity::new(1.0, s))) is Err(_))
+///   assert_true(Quantity::new(1.0, m).checked_add(Quantity::new(1.0, s)) is None)
 /// }
 /// ```
 pub fn Quantity::add(
