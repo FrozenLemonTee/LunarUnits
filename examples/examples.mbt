@@ -59,3 +59,34 @@ test "adding incompatible dimensions is rejected" {
   let time = @quantity.Quantity::new(1.0, @si.second)
   assert_true((try? length.add(time)) is Err(_))
 }
+
+///|
+/// Physical constants are ordinary quantities. Multiplying the speed of light
+/// by a time gives a distance.
+test "distance travelled by light in one second" {
+  let one_second = @quantity.Quantity::new(1.0, @si.second)
+  let distance = @physics.speed_of_light * one_second
+  assert_eq(distance.value(), 299792458.0)
+  assert_true(distance.unit().is_compatible(@si.meter))
+}
+
+///|
+/// Information units live in an extension dimension outside the SI core.
+test "information quantity conversion" {
+  let memory = @qinformation.kibibytes(1.0)
+  let as_bytes = memory.to(@information.byte)
+  assert_eq(as_bytes.value(), 1024.0)
+}
+
+///|
+/// Angle is modeled as an extension dimension, so degrees and radians convert
+/// to each other without becoming interchangeable with plain dimensionless
+/// ratios.
+test "angle quantity conversion" {
+  let half_turn = @qangle.degrees(180.0)
+  let radians = half_turn.to(@angle.radian)
+  assert_eq(radians.value(), 3.141592653589793)
+  assert_false(
+    radians.dimension().is_same(@dimension.Dimension::dimensionless()),
+  )
+}

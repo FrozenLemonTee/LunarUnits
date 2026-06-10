@@ -19,7 +19,8 @@ type system.
 - `Quantity` — a numeric value paired with a unit.
 - Seven base dimensions and a minimal normalized symbolic algebra behind them.
 - SI base units and a growing set of common units grouped by domain
-  (geometry, mass, mechanics, fluid, thermal, electromagnetism).
+  (geometry, mass, mechanics, fluid, thermal, electromagnetism, angle,
+  solid_angle, information, currency, count).
 - Addition, subtraction, multiplication, division and integer powers, with
   units composed automatically.
 - Same-dimension conversion, and runtime rejection of dimensionally invalid
@@ -27,6 +28,7 @@ type system.
 - `checked_*` APIs for non-raising addition, subtraction and conversion paths.
 - ASCII formatters for units and quantities, e.g. `m/s^2` and `9.8 m/s^2`.
 - Convenience quantity constructors for built-in unit domains.
+- Extension dimensions and common physical constants.
 - Every public API ships with a runnable documentation example.
 
 ## Installation
@@ -41,7 +43,9 @@ Then import the packages you need in your `moon.pkg`, for example:
 import {
   "FrozenLemonTee/LunarUnits/core/quantity",
   "FrozenLemonTee/LunarUnits/units/si",
+  "FrozenLemonTee/LunarUnits/constants/physics",
   "FrozenLemonTee/LunarUnits/quantities/qgeometry",
+  "FrozenLemonTee/LunarUnits/quantities/qinformation",
   "FrozenLemonTee/LunarUnits/quantities/qmechanics",
 }
 ```
@@ -68,6 +72,10 @@ let in_meters = @qgeometry.kilometers(2.0).to(@si.meter)
 
 // Domain constructors are just shorthand for Quantity::new(value, unit).
 let load = @qmechanics.newtons(6.0)
+
+// Constants and extension dimensions are ordinary quantities too.
+let light_second = @physics.speed_of_light * @quantity.Quantity::new(1.0, @si.second)
+let memory = @qinformation.kibibytes(1.0)
 
 // Dimensionally invalid operations are rejected: `add`/`sub`/`to` raise
 // `DimensionMismatch` when the dimensions do not match. Use `checked_*`
@@ -113,8 +121,8 @@ operations raise (`Quantity::add`/`sub`/`to` raise `DimensionMismatch` with the
 expected and actual dimensions).
 
 The unit collections are organized by domain so users import only what they
-need; each domain package depends only on `units/si`, with no cross-domain
-dependencies.
+need. Extension packages can introduce additional dimensions without making the
+SI-oriented core or existing unit domains depend on those dimensions.
 
 ## Package layout
 
@@ -124,15 +132,28 @@ core/
   dimension    physical dimensions (Dimension)
   unit         unit definitions and conversion (Un)
   quantity     values with units (Quantity, DimensionMismatch)
+dimensions/
+  angle_dimension        extension dimension for plane angle
+  solid_angle_dimension  extension dimension for solid angle
+  information_dimension  extension dimension for information
+  currency_dimension     extension dimension for money
+  count_dimension        extension dimension for discrete counts
 units/
   si           SI base units
+  angle        radian, degree, turn, arcminute and arcsecond
+  solid_angle  steradian, square degree, spat
   geometry     length, area, volume
   mass         mass, density
   mechanics    force, pressure, velocity, energy, power
   fluid        dynamic/kinematic viscosity, permeability
   thermal      heat transfer coefficient, conductivity, specific heat, heat
   electromagnetism  charge, voltage, resistance, capacitance, inductance, flux
+  information  bit, byte and common decimal/binary byte units
+  currency     dollar, cent, k$, M$ (same-currency only)
+  count        each, dozen, gross
 quantities/
+  qangle       plane angle quantity constructors
+  qsolidangle  solid angle quantity constructors
   qsi          SI base quantity constructors
   qgeometry    geometry quantity constructors
   qmass        mass and density quantity constructors
@@ -140,6 +161,11 @@ quantities/
   qfluid       fluid quantity constructors
   qthermal     thermal quantity constructors
   qelectromagnetism  electrical and magnetic quantity constructors
+  qinformation information quantity constructors
+  qcurrency    currency quantity constructors
+  qcount       discrete-count quantity constructors
+constants/
+  physics      common physical constants as quantities
 examples/      runnable, self-checking examples
 docs/          design and roadmap notes
 ```

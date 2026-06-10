@@ -1,0 +1,22 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/quantities/qsolidangle"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub fn spats(Double) -> @quantity.Quantity
+
+pub fn square_degrees(Double) -> @quantity.Quantity
+
+pub fn steradians(Double) -> @quantity.Quantity
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

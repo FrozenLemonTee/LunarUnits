@@ -1,0 +1,8 @@
+// Currency dimension extension package.
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+}
+
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"

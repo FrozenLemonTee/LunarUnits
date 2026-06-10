@@ -1,0 +1,22 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/quantities/qcount"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub fn counts(Double) -> @quantity.Quantity
+
+pub fn dozens(Double) -> @quantity.Quantity
+
+pub fn grosses(Double) -> @quantity.Quantity
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

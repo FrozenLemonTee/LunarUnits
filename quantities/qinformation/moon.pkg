@@ -1,0 +1,5 @@
+// Convenience quantity constructors for information units.
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/units/information",
+}

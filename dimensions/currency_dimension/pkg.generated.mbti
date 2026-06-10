@@ -1,0 +1,18 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/dimensions/currency_dimension"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+}
+
+// Values
+pub fn currency() -> @dimension.Dimension
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

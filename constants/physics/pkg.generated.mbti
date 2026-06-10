@@ -1,0 +1,28 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/constants/physics"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub let avogadro_constant : @quantity.Quantity
+
+pub let boltzmann_constant : @quantity.Quantity
+
+pub let gravitational_constant : @quantity.Quantity
+
+pub let planck_constant : @quantity.Quantity
+
+pub let speed_of_light : @quantity.Quantity
+
+pub let standard_gravity : @quantity.Quantity
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

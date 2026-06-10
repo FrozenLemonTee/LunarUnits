@@ -20,6 +20,16 @@ The `units/*` packages expose unit values (`Un`). The `quantities/*` packages
 expose convenience constructors that return `Quantity`; they do not introduce
 new quantity types or change the runtime dimension-checking model.
 
+The `dimensions/*` packages are optional extension dimensions. They may use the
+generic `Dimension::custom(...)` constructor, but `core/dimension` does not know
+about any specific extension domain. Matching extension unit and quantity
+packages, such as angle and information units, depend on those extension
+dimensions.
+
+The `constants/*` packages expose reusable `Quantity` values. Constants do not
+need special runtime behavior: they compose with the same unit algebra and
+dimension checks as user-created quantities.
+
 ## Operator Policy
 
 LunarUnits uses operators only where the operation is total and has the same
@@ -58,6 +68,20 @@ functions:
 
 The initial formatter is deliberately ASCII-only. SI-superscript and LaTeX
 styles can be added later without changing the debug representation.
+
+## Extension Boundary
+
+Extension dimensions should stay outside the SI core unless they are part of
+the seven SI base dimensions. For example, extension domains are modeled as:
+
+- `dimensions/angle_dimension`: defines the plane angle dimension.
+- `units/angle`: defines radian, degree, turn, arcminute and arcsecond.
+- `quantities/qangle`: defines plane angle quantity constructors.
+- `dimensions/information_dimension`: defines the information dimension.
+- `units/information`: defines bit, byte and decimal/binary byte units.
+- `quantities/qinformation`: defines information quantity constructors.
+
+Existing SI-oriented packages must not depend back on extension dimensions.
 
 ## MVP Boundary
 

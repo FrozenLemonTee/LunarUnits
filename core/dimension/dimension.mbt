@@ -66,6 +66,26 @@ fn base(symbol : String) -> Dimension {
 }
 
 ///|
+/// Builds an extension dimension from a caller-owned symbol.
+///
+/// This is intended for domain packages that need dimensions outside the seven
+/// SI base dimensions, while keeping the core dimension package independent
+/// from those domains.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let information = Dimension::custom("Info")
+///   assert_true(information.is_same(Dimension::custom("Info")))
+///   assert_false(information.is_same(Dimension::length()))
+/// }
+/// ```
+pub fn Dimension::custom(symbol : String) -> Dimension {
+  base(symbol)
+}
+
+///|
 /// The length dimension (L).
 ///
 /// # Example
