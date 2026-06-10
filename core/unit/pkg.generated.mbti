@@ -10,9 +10,17 @@ import {
 // Values
 pub fn format_unit(Un) -> String
 
+pub fn format_unit_with(Un, FormatStyle) -> String
+
 // Errors
 
 // Types and methods
+pub(all) enum FormatStyle {
+  Ascii
+  Si
+  Latex
+} derive(Eq)
+
 pub struct Un {
   repr : @algebra.Monomial
   dim : @dimension.Dimension

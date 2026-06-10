@@ -197,3 +197,17 @@ test "format quantity ascii" {
   let acceleration = Quantity::new(9.8, meter() / second().pow(2))
   assert_eq(format_quantity(acceleration), "9.8 m/s^2")
 }
+
+///|
+/// Style-aware quantity formatter reuses the unit formatter's notations.
+test "format quantity with styles" {
+  let acceleration = Quantity::new(9.8, meter() / second().pow(2))
+  assert_eq(
+    format_quantity_with(acceleration, @unit.FormatStyle::Si),
+    "9.8 m/s²",
+  )
+  assert_eq(
+    format_quantity_with(acceleration, @unit.FormatStyle::Latex),
+    "9.8 \\mathrm{m}/\\mathrm{s}^{2}",
+  )
+}

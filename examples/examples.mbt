@@ -138,3 +138,20 @@ test "frequency converts to angular frequency (1 Hz = 2 pi rad/s)" {
   let omega = mains.to(rad_per_second)
   assert_eq(omega.value(), 314.1592653589793)
 }
+
+///|
+/// The same quantity can be rendered for different audiences: compact ASCII for
+/// logs, Unicode/SI for human-readable output, and LaTeX for documents. The
+/// numerator/denominator layout is shared; only the notation changes.
+test "format an acceleration in ASCII, SI and LaTeX" {
+  let acceleration = @quantity.Quantity::new(9.8, @si.meter / @si.second.pow(2))
+  assert_eq(@quantity.format_quantity(acceleration), "9.8 m/s^2")
+  assert_eq(
+    @quantity.format_quantity_with(acceleration, @unit.FormatStyle::Si),
+    "9.8 m/s²",
+  )
+  assert_eq(
+    @quantity.format_quantity_with(acceleration, @unit.FormatStyle::Latex),
+    "9.8 \\mathrm{m}/\\mathrm{s}^{2}",
+  )
+}

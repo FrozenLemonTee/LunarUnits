@@ -243,36 +243,110 @@ pub fn Un::conversion_factor(self : Un, target : Un) -> Double? {
 }
 
 ///|
-/// Formats one unit factor in ASCII notation.
-fn format_factor(symbol : String, exponent : Int) -> String {
-  if exponent == 1 {
-    symbol
-  } else {
-    "\{symbol}^\{exponent}"
-  }
-}
+/// Display style for [`format_unit_with`] and quantity formatters.
+///
+/// - `Ascii`: compact ASCII, e.g. `m/s^2`, factors joined with `*`.
+/// - `Si`: Unicode/SI notation, e.g. `m/s²`, factors joined with `·` and
+///   exponents printed as superscripts.
+/// - `Latex`: LaTeX math, e.g. `\mathrm{m}/\mathrm{s}^{2}`, factors joined with
+///   `\cdot`.
+pub(all) enum FormatStyle {
+  Ascii
+  Si
+  Latex
+} derive(Eq)
 
 ///|
-/// Joins already-formatted factors with `*`.
-fn join_factors(factors : Array[String]) -> String {
-  if factors.is_empty() {
-    return ""
+/// Maps a non-negative integer to its Unicode superscript digits.
+fn superscript_digits(value : Int) -> String {
+  let supers = [
+    "⁰", "¹", "²", "³", "⁴", "⁵", "⁶", "⁷", "⁸", "⁹",
+  ]
+  if value < 10 {
+    return supers[value]
   }
-  let mut result = factors[0]
-  for i in 1..<factors.length() {
-    result = "\{result}*\{factors[i]}"
+  let digits : Array[Int] = []
+  let mut n = value
+  while n > 0 {
+    digits.push(n % 10)
+    n = n / 10
+  }
+  let mut result = ""
+  let mut i = digits.length() - 1
+  while i >= 0 {
+    result = "\{result}\{supers[digits[i]]}"
+    i = i - 1
   }
   result
 }
 
 ///|
-/// Adds parentheses when a denominator contains multiple factors.
-fn format_denominator(factors : Array[String]) -> String {
-  let denominator = join_factors(factors)
+/// Renders a unit symbol for the given style.
+fn render_symbol(style : FormatStyle, symbol : String) -> String {
+  match style {
+    Latex => "\\mathrm{\{symbol}}"
+    _ => symbol
+  }
+}
+
+///|
+/// Renders an exponent suffix for the given style. An exponent of 1 is implicit
+/// and renders as the empty string.
+fn render_exponent(style : FormatStyle, exponent : Int) -> String {
+  if exponent == 1 {
+    return ""
+  }
+  match style {
+    Ascii => "^\{exponent}"
+    Si => superscript_digits(exponent)
+    Latex => "^{\{exponent}}"
+  }
+}
+
+///|
+/// Renders one unit factor (`symbol` raised to a positive `exponent`).
+fn render_factor(
+  style : FormatStyle,
+  symbol : String,
+  exponent : Int,
+) -> String {
+  "\{render_symbol(style, symbol)}\{render_exponent(style, exponent)}"
+}
+
+///|
+/// Returns the multiplication separator between factors for the given style.
+fn multiply_separator(style : FormatStyle) -> String {
+  match style {
+    Ascii => "*"
+    Si => "·"
+    Latex => "\\cdot "
+  }
+}
+
+///|
+/// Joins ordered `(symbol, exponent)` factors using the style's separator.
+fn join_rendered(style : FormatStyle, factors : Array[(String, Int)]) -> String {
+  let separator = multiply_separator(style)
+  let mut result = ""
+  for i in 0..<factors.length() {
+    let (symbol, exponent) = factors[i]
+    let rendered = render_factor(style, symbol, exponent)
+    result = if i == 0 { rendered } else { "\{result}\{separator}\{rendered}" }
+  }
+  result
+}
+
+///|
+/// Renders a denominator, adding parentheses when it has multiple factors.
+fn render_denominator(
+  style : FormatStyle,
+  factors : Array[(String, Int)],
+) -> String {
+  let body = join_rendered(style, factors)
   if factors.length() == 1 {
-    denominator
+    body
   } else {
-    "(\{denominator})"
+    "(\{body})"
   }
 }
 
@@ -289,64 +363,89 @@ fn has_display_priority(symbol : String) -> Bool {
 }
 
 ///|
-/// Adds priority factors in conventional SI display order.
-fn push_priority_factors(
-  output : Array[String],
-  factors : Array[(String, String)],
+/// Appends priority factors in conventional SI display order.
+fn push_priority_pairs(
+  output : Array[(String, Int)],
+  factors : Array[(String, Int)],
 ) -> Unit {
   let priority = ["kg", "m", "s", "A", "K", "mol", "cd"]
   for target in priority {
     for pair in factors {
-      let (symbol, formatted) = pair
+      let (symbol, _) = pair
       if symbol == target {
-        output.push(formatted)
+        output.push(pair)
       }
     }
   }
 }
 
 ///|
-/// Adds all factors from `source` to `output`.
-fn push_all_factors(output : Array[String], source : Array[String]) -> Unit {
-  for factor in source {
-    output.push(factor)
+/// Appends all factors from `source` to `output`.
+fn push_all_pairs(
+  output : Array[(String, Int)],
+  source : Array[(String, Int)],
+) -> Unit {
+  for pair in source {
+    output.push(pair)
   }
 }
 
 ///|
-/// Splits factors into numerator and denominator while scanning terms once.
-fn split_format_factors(
+/// Orders factors into numerator and denominator lists, scanning terms once.
+///
+/// Both lists hold `(symbol, exponent)` pairs with positive exponents. This
+/// ordering is style-independent and shared by every [`FormatStyle`]; only the
+/// leaf rendering differs.
+fn ordered_format_factors(
   terms : Array[(String, Int)],
-) -> (Array[String], Array[String]) {
-  let numerator_priority : Array[(String, String)] = []
-  let denominator_priority : Array[(String, String)] = []
-  let numerator_other : Array[String] = []
-  let denominator_other : Array[String] = []
+) -> (Array[(String, Int)], Array[(String, Int)]) {
+  let numerator_priority : Array[(String, Int)] = []
+  let denominator_priority : Array[(String, Int)] = []
+  let numerator_other : Array[(String, Int)] = []
+  let denominator_other : Array[(String, Int)] = []
   for pair in terms {
     let (symbol, exponent) = pair
     if exponent > 0 {
-      let formatted = format_factor(symbol, exponent)
       if has_display_priority(symbol) {
-        numerator_priority.push((symbol, formatted))
+        numerator_priority.push((symbol, exponent))
       } else {
-        numerator_other.push(formatted)
+        numerator_other.push((symbol, exponent))
       }
+    } else if has_display_priority(symbol) {
+      denominator_priority.push((symbol, -exponent))
     } else {
-      let formatted = format_factor(symbol, -exponent)
-      if has_display_priority(symbol) {
-        denominator_priority.push((symbol, formatted))
-      } else {
-        denominator_other.push(formatted)
-      }
+      denominator_other.push((symbol, -exponent))
     }
   }
-  let numerator : Array[String] = []
-  let denominator : Array[String] = []
-  push_priority_factors(numerator, numerator_priority)
-  push_all_factors(numerator, numerator_other)
-  push_priority_factors(denominator, denominator_priority)
-  push_all_factors(denominator, denominator_other)
+  let numerator : Array[(String, Int)] = []
+  let denominator : Array[(String, Int)] = []
+  push_priority_pairs(numerator, numerator_priority)
+  push_all_pairs(numerator, numerator_other)
+  push_priority_pairs(denominator, denominator_priority)
+  push_all_pairs(denominator, denominator_other)
   (numerator, denominator)
+}
+
+///|
+/// Renders an ordered numerator/denominator split into a fraction string.
+fn render_split(
+  style : FormatStyle,
+  numerator : Array[(String, Int)],
+  denominator : Array[(String, Int)],
+) -> String {
+  if denominator.is_empty() {
+    return if numerator.is_empty() {
+      "1"
+    } else {
+      join_rendered(style, numerator)
+    }
+  }
+  let denominator_text = render_denominator(style, denominator)
+  if numerator.is_empty() {
+    "1/\{denominator_text}"
+  } else {
+    "\{join_rendered(style, numerator)}/\{denominator_text}"
+  }
 }
 
 ///|
@@ -354,7 +453,8 @@ fn split_format_factors(
 ///
 /// Positive exponents are printed in the numerator and negative exponents in
 /// the denominator. Unit scale factors are not printed; the symbolic unit name
-/// chosen at construction time is used instead.
+/// chosen at construction time is used instead. For other notations see
+/// [`format_unit_with`].
 ///
 /// # Example
 ///
@@ -367,15 +467,32 @@ fn split_format_factors(
 /// }
 /// ```
 pub fn format_unit(unit : Un) -> String {
+  format_unit_with(unit, FormatStyle::Ascii)
+}
+
+///|
+/// Formats a unit using the given [`FormatStyle`].
+///
+/// The numerator/denominator split and SI ordering are shared across styles;
+/// only symbol, exponent and separator rendering differ.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let meter = Un::base("m", @dimension.Dimension::length())
+///   let second = Un::base("s", @dimension.Dimension::time())
+///   let accel = meter / second.pow(2)
+///   assert_eq(format_unit_with(accel, FormatStyle::Ascii), "m/s^2")
+///   assert_eq(format_unit_with(accel, FormatStyle::Si), "m/s²")
+///   assert_eq(
+///     format_unit_with(accel, FormatStyle::Latex),
+///     "\\mathrm{m}/\\mathrm{s}^{2}",
+///   )
+/// }
+/// ```
+pub fn format_unit_with(unit : Un, style : FormatStyle) -> String {
   let terms = unit.repr.terms()
-  let (numerator, denominator) = split_format_factors(terms)
-  if denominator.is_empty() {
-    return if numerator.is_empty() { "1" } else { join_factors(numerator) }
-  }
-  let denominator_text = format_denominator(denominator)
-  if numerator.is_empty() {
-    "1/\{denominator_text}"
-  } else {
-    "\{join_factors(numerator)}/\{denominator_text}"
-  }
+  let (numerator, denominator) = ordered_format_factors(terms)
+  render_split(style, numerator, denominator)
 }
