@@ -62,3 +62,26 @@ pub let megadollar : @unit.Un = @unit.Un::scaled(
   dollar.dimension(),
   1.0e6,
 )
+
+///|
+/// Defines a foreign-currency unit from its current exchange rate against the
+/// dollar, expressed as dollars per one unit of that currency.
+///
+/// Exchange rates vary over time, so they are deliberately never built into
+/// this package; the caller supplies the current rate. Because the dimension is
+/// fixed to the currency dimension internally (it is not a parameter), the
+/// result is always a currency unit: it converts against `dollar` and the other
+/// currency units, and can never be mistaken for a unit of another dimension.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let euro = at_rate("EUR", 1.08)
+///   assert_true(euro.is_compatible(dollar))
+///   assert_eq(euro.conversion_factor(dollar).unwrap(), 1.08)
+/// }
+/// ```
+pub fn at_rate(symbol : String, usd_per_unit : Double) -> @unit.Un {
+  @unit.Un::scaled(symbol, dollar.dimension(), usd_per_unit)
+}

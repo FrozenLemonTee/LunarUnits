@@ -4,3 +4,7 @@ import {
   "FrozenLemonTee/LunarUnits/core/unit",
   "FrozenLemonTee/LunarUnits/dimensions/currency_dimension",
 }
+
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"

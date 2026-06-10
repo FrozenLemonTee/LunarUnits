@@ -6,6 +6,8 @@ import {
 }
 
 // Values
+pub fn at_rate(String, Double) -> @unit.Un
+
 pub let cent : @unit.Un
 
 pub let dollar : @unit.Un
