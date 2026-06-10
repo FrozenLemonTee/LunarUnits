@@ -59,6 +59,17 @@ pub impl Show for Quantity with fn output(self, logger) {
 ///|
 /// Allows `lhs * rhs` as shorthand for `lhs.mul(rhs)`. Quantity multiplication
 /// is total: it always composes values and units without dimensional rejection.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = @unit.Un::base("m", @dimension.Dimension::length())
+///   let area = Quantity::new(2.0, m) * Quantity::new(3.0, m)
+///   assert_eq(area.value(), 6.0)
+///   assert_true(area.dimension().is_same(@dimension.Dimension::length().pow(2)))
+/// }
+/// ```
 pub impl Mul for Quantity with fn mul(self : Quantity, other : Quantity) -> Quantity {
   { v: self.v * other.v, u: self.u.mul(other.u) }
 }
@@ -66,12 +77,39 @@ pub impl Mul for Quantity with fn mul(self : Quantity, other : Quantity) -> Quan
 ///|
 /// Allows `lhs / rhs` as shorthand for `lhs.div(rhs)`. Quantity division is
 /// total: it always composes values and units without dimensional rejection.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = @unit.Un::base("m", @dimension.Dimension::length())
+///   let s = @unit.Un::base("s", @dimension.Dimension::time())
+///   let speed = Quantity::new(10.0, m) / Quantity::new(2.0, s)
+///   assert_eq(speed.value(), 5.0)
+///   assert_true(
+///     speed
+///     .dimension()
+///     .is_same(@dimension.Dimension::length().div(@dimension.Dimension::time())),
+///   )
+/// }
+/// ```
 pub impl Div for Quantity with fn div(self : Quantity, other : Quantity) -> Quantity {
   { v: self.v / other.v, u: self.u.div(other.u) }
 }
 
 ///|
 /// Allows unary `-quantity`, negating the value while preserving the unit.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = @unit.Un::base("m", @dimension.Dimension::length())
+///   let q = -Quantity::new(3.0, m)
+///   assert_eq(q.value(), -3.0)
+///   assert_true(q.unit().is_compatible(m))
+/// }
+/// ```
 pub impl Neg for Quantity with fn neg(self : Quantity) -> Quantity {
   { v: -self.v, u: self.u }
 }

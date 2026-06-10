@@ -40,12 +40,32 @@ pub impl Show for Un with fn output(self, logger) {
 
 ///|
 /// Allows `lhs * rhs` as shorthand for `lhs.mul(rhs)`.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = Un::base("m", @dimension.Dimension::length())
+///   let area = m * m
+///   assert_true(area.dimension().is_same(@dimension.Dimension::length().pow(2)))
+/// }
+/// ```
 pub impl Mul for Un with fn mul(self : Un, other : Un) -> Un {
   { repr: self.repr.mul(other.repr), dim: self.dim.mul(other.dim) }
 }
 
 ///|
 /// Allows `lhs / rhs` as shorthand for `lhs.div(rhs)`.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = Un::base("m", @dimension.Dimension::length())
+///   let s = Un::base("s", @dimension.Dimension::time())
+///   assert_true((m / s).dimension().is_same(m.div(s).dimension()))
+/// }
+/// ```
 pub impl Div for Un with fn div(self : Un, other : Un) -> Un {
   { repr: self.repr.div(other.repr), dim: self.dim.div(other.dim) }
 }
