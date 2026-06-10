@@ -52,12 +52,12 @@ test "convert 2 km to metres" {
 }
 
 ///|
-/// Adding quantities of different dimensions is rejected: `add` raises
-/// `DimensionMismatch`, surfaced here as an `Err` via `try?`.
+/// Adding quantities of different dimensions is rejected: the non-raising
+/// `checked_add` returns `None` instead of a value.
 test "adding incompatible dimensions is rejected" {
   let length = @quantity.Quantity::new(1.0, @si.meter)
   let time = @quantity.Quantity::new(1.0, @si.second)
-  assert_true((try? length.add(time)) is Err(_))
+  assert_true(length.checked_add(time) is None)
 }
 
 ///|
