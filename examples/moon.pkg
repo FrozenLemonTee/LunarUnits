@@ -8,8 +8,11 @@ import {
   "FrozenLemonTee/LunarUnits/units/angle",
   "FrozenLemonTee/LunarUnits/units/mechanics",
   "FrozenLemonTee/LunarUnits/units/information",
+  "FrozenLemonTee/LunarUnits/units/currency",
   "FrozenLemonTee/LunarUnits/quantities/qangle",
   "FrozenLemonTee/LunarUnits/quantities/qgeometry",
   "FrozenLemonTee/LunarUnits/quantities/qinformation",
   "FrozenLemonTee/LunarUnits/quantities/qmechanics",
+  "FrozenLemonTee/LunarUnits/quantities/qcurrency",
+  "FrozenLemonTee/LunarUnits/quantities/qcount",
 }

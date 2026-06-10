@@ -4,7 +4,9 @@ The `units` area is reserved for built-in unit packages.
 
 - `si`: SI base units for the MVP.
 - `angle`: plane angle units such as radian, degree, turn, arcminute and
-  arcsecond.
+  arcsecond, plus `cycle` and `hertz` (cycles per second) in the angle/time
+  dimension, so frequency and angular frequency share a dimension
+  (1 Hz = 2*pi rad/s).
 - domain packages such as `geometry`, `mechanics`, `fluid`, `thermal` and
   `electromagnetism`: common coherent and non-SI units grouped by physical
   domain.

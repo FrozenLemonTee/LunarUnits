@@ -10,7 +10,11 @@ pub let arcminute : @unit.Un
 
 pub let arcsecond : @unit.Un
 
+pub let cycle : @unit.Un
+
 pub let degree : @unit.Un
+
+pub let hertz : @unit.Un
 
 pub let radian : @unit.Un
 

@@ -10,7 +10,11 @@ pub fn arcminutes(Double) -> @quantity.Quantity
 
 pub fn arcseconds(Double) -> @quantity.Quantity
 
+pub fn cycles(Double) -> @quantity.Quantity
+
 pub fn degrees(Double) -> @quantity.Quantity
+
+pub fn hertz(Double) -> @quantity.Quantity
 
 pub fn radians(Double) -> @quantity.Quantity
 

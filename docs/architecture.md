@@ -75,7 +75,8 @@ Extension dimensions should stay outside the SI core unless they are part of
 the seven SI base dimensions. For example, extension domains are modeled as:
 
 - `dimensions/angle_dimension`: defines the plane angle dimension.
-- `units/angle`: defines radian, degree, turn, arcminute and arcsecond.
+- `units/angle`: defines radian, degree, turn, arcminute, arcsecond, plus cycle
+  and hertz (cycles per second) in the angle/time dimension.
 - `quantities/qangle`: defines plane angle quantity constructors.
 - `dimensions/information_dimension`: defines the information dimension.
 - `units/information`: defines bit, byte and decimal/binary byte units.
