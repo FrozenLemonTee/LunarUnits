@@ -15,6 +15,7 @@ pub struct Dimension {
   repr : @algebra.Monomial
 } derive(Eq, @debug.Debug)
 pub fn Dimension::amount_of_substance() -> Self
+pub fn Dimension::custom(String) -> Self
 pub fn Dimension::dimensionless() -> Self
 pub fn Dimension::div(Self, Self) -> Self
 pub fn Dimension::electric_current() -> Self
