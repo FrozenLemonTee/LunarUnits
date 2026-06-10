@@ -241,3 +241,141 @@ pub fn Un::conversion_factor(self : Un, target : Un) -> Double? {
     None
   }
 }
+
+///|
+/// Formats one unit factor in ASCII notation.
+fn format_factor(symbol : String, exponent : Int) -> String {
+  if exponent == 1 {
+    symbol
+  } else {
+    "\{symbol}^\{exponent}"
+  }
+}
+
+///|
+/// Joins already-formatted factors with `*`.
+fn join_factors(factors : Array[String]) -> String {
+  if factors.is_empty() {
+    return ""
+  }
+  let mut result = factors[0]
+  for i in 1..<factors.length() {
+    result = "\{result}*\{factors[i]}"
+  }
+  result
+}
+
+///|
+/// Adds parentheses when a denominator contains multiple factors.
+fn format_denominator(factors : Array[String]) -> String {
+  let denominator = join_factors(factors)
+  if factors.length() == 1 {
+    denominator
+  } else {
+    "(\{denominator})"
+  }
+}
+
+///|
+/// Returns whether a symbol has a conventional display priority.
+fn has_display_priority(symbol : String) -> Bool {
+  symbol == "kg" ||
+  symbol == "m" ||
+  symbol == "s" ||
+  symbol == "A" ||
+  symbol == "K" ||
+  symbol == "mol" ||
+  symbol == "cd"
+}
+
+///|
+/// Adds priority factors in conventional SI display order.
+fn push_priority_factors(
+  output : Array[String],
+  factors : Array[(String, String)],
+) -> Unit {
+  let priority = ["kg", "m", "s", "A", "K", "mol", "cd"]
+  for target in priority {
+    for pair in factors {
+      let (symbol, formatted) = pair
+      if symbol == target {
+        output.push(formatted)
+      }
+    }
+  }
+}
+
+///|
+/// Adds all factors from `source` to `output`.
+fn push_all_factors(output : Array[String], source : Array[String]) -> Unit {
+  for factor in source {
+    output.push(factor)
+  }
+}
+
+///|
+/// Splits factors into numerator and denominator while scanning terms once.
+fn split_format_factors(
+  terms : Array[(String, Int)],
+) -> (Array[String], Array[String]) {
+  let numerator_priority : Array[(String, String)] = []
+  let denominator_priority : Array[(String, String)] = []
+  let numerator_other : Array[String] = []
+  let denominator_other : Array[String] = []
+  for pair in terms {
+    let (symbol, exponent) = pair
+    if exponent > 0 {
+      let formatted = format_factor(symbol, exponent)
+      if has_display_priority(symbol) {
+        numerator_priority.push((symbol, formatted))
+      } else {
+        numerator_other.push(formatted)
+      }
+    } else {
+      let formatted = format_factor(symbol, -exponent)
+      if has_display_priority(symbol) {
+        denominator_priority.push((symbol, formatted))
+      } else {
+        denominator_other.push(formatted)
+      }
+    }
+  }
+  let numerator : Array[String] = []
+  let denominator : Array[String] = []
+  push_priority_factors(numerator, numerator_priority)
+  push_all_factors(numerator, numerator_other)
+  push_priority_factors(denominator, denominator_priority)
+  push_all_factors(denominator, denominator_other)
+  (numerator, denominator)
+}
+
+///|
+/// Formats a unit in compact ASCII notation for user-facing display.
+///
+/// Positive exponents are printed in the numerator and negative exponents in
+/// the denominator. Unit scale factors are not printed; the symbolic unit name
+/// chosen at construction time is used instead.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let meter = Un::base("m", @dimension.Dimension::length())
+///   let second = Un::base("s", @dimension.Dimension::time())
+///   assert_eq(format_unit(meter / second.pow(2)), "m/s^2")
+///   assert_eq(format_unit(meter.pow(2)), "m^2")
+/// }
+/// ```
+pub fn format_unit(unit : Un) -> String {
+  let terms = unit.repr.terms()
+  let (numerator, denominator) = split_format_factors(terms)
+  if denominator.is_empty() {
+    return if numerator.is_empty() { "1" } else { join_factors(numerator) }
+  }
+  let denominator_text = format_denominator(denominator)
+  if numerator.is_empty() {
+    "1/\{denominator_text}"
+  } else {
+    "\{join_factors(numerator)}/\{denominator_text}"
+  }
+}

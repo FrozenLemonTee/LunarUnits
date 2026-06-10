@@ -47,6 +47,18 @@ The quantity layer exposes both raising and non-raising APIs:
 - `.can_add(...)`, `.can_sub(...)`, and `.can_to(...)` provide lightweight
   compatibility checks for control-flow decisions.
 
+## Formatting Boundary
+
+`Show` remains a debug-oriented representation for assertion diffs and
+structural inspection. User-facing display goes through explicit formatter
+functions:
+
+- `format_unit(unit)` returns compact ASCII unit notation such as `m/s^2`.
+- `format_quantity(quantity)` returns `<value> <unit>`, such as `9.8 m/s^2`.
+
+The initial formatter is deliberately ASCII-only. SI-superscript and LaTeX
+styles can be added later without changing the debug representation.
+
 ## MVP Boundary
 
 The first implementation phase should focus on:
@@ -59,5 +71,6 @@ The first implementation phase should focus on:
 - same-dimension conversion
 - invalid dimension operation tests
 
-The MVP should not include parser, formatter, symbol preservation, or custom
-unit registration unless the core model is already stable.
+The MVP should not include parser or custom unit registration unless the core
+model is already stable. The post-MVP formatter layer is an explicit display
+API and should stay separate from `Show`.

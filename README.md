@@ -25,6 +25,7 @@ type system.
 - Same-dimension conversion, and runtime rejection of dimensionally invalid
   operations.
 - `checked_*` APIs for non-raising addition, subtraction and conversion paths.
+- ASCII formatters for units and quantities, e.g. `m/s^2` and `9.8 m/s^2`.
 - Convenience quantity constructors for built-in unit domains.
 - Every public API ships with a runnable documentation example.
 
@@ -54,6 +55,7 @@ let time = @quantity.Quantity::new(10.0, @si.second)
 
 // Arithmetic composes units automatically.
 let speed = distance / time // 10 m/s
+let speed_text = @quantity.format_quantity(speed) // "10 m/s"
 
 // Newton's second law: F = m * a.
 let mass = @quantity.Quantity::new(2.0, @si.kilogram)
@@ -99,6 +101,10 @@ layers, never the other way around.
    and conversion are dimensionally checked; multiplication and division compose
    units. `Dimension`, `Un`, and `Quantity` support `*` and `/` as shorthand for
    total algebraic composition; integer powers remain explicit via `.pow(n)`.
+
+Formatting is intentionally separate from `Show`: `Show` stays useful for debug
+diffs, while `format_unit` and `format_quantity` provide compact ASCII strings
+for user-facing display.
 
 Error handling follows a deliberate split: low-level *queries* and recoverable
 paths return `Option` (e.g. `Un::conversion_factor`,
