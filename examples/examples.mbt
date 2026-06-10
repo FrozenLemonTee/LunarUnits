@@ -90,3 +90,51 @@ test "angle quantity conversion" {
     radians.dimension().is_same(@dimension.Dimension::dimensionless()),
   )
 }
+
+///|
+/// Currency is an extension dimension. Exchange rates vary over time, so the
+/// library never bundles them: the caller injects the current rate with
+/// `at_rate` (here 1 EUR = 1.25 USD) to convert across currencies.
+test "cross-currency conversion with an injected exchange rate" {
+  let euro = @currency.at_rate("EUR", 1.25)
+  let price = @qcurrency.dollars(250.0)
+  let in_euros = price.to(euro)
+  assert_eq(in_euros.value(), 200.0)
+}
+
+///|
+/// A cost rate is money divided by time. Dividing quantities composes their
+/// units into a currency / time dimension, distinct from a plain money amount.
+test "cost rate = money / time" {
+  let cost = @qcurrency.dollars(45.0)
+  let time = @quantity.Quantity::new(3.0, @si.second)
+  let rate = cost / time
+  assert_eq(rate.value(), 15.0)
+  assert_false(rate.dimension().is_same(cost.dimension()))
+}
+
+///|
+/// A unit price is money divided by a count. Multiplying it back by a count
+/// cancels the count dimension and recovers a money amount, so a dozen items at
+/// the same unit price bills in dollars.
+test "unit price = money / count" {
+  let total = @qcurrency.dollars(120.0)
+  let items = @qcount.counts(40.0)
+  let unit_price = total / items
+  assert_eq(unit_price.value(), 3.0)
+  let bill = unit_price * @qcount.dozens(1.0)
+  assert_true(bill.unit().is_compatible(@currency.dollar))
+  assert_eq(bill.to(@currency.dollar).value(), 36.0)
+}
+
+///|
+/// Because angle is an extension dimension, frequency (hertz) and angular
+/// frequency (radians per second) share the angle/time dimension and convert
+/// into each other: 1 Hz = 2*pi rad/s. Mains power at 50 Hz is about 314 rad/s.
+test "frequency converts to angular frequency (1 Hz = 2 pi rad/s)" {
+  let mains = @qangle.hertz(50.0)
+  let rad_per_second = @angle.radian / @si.second
+  assert_true(mains.unit().is_compatible(rad_per_second))
+  let omega = mains.to(rad_per_second)
+  assert_eq(omega.value(), 314.1592653589793)
+}
