@@ -24,6 +24,7 @@ type system.
   units composed automatically.
 - Same-dimension conversion, and runtime rejection of dimensionally invalid
   operations.
+- `checked_*` APIs for non-raising addition, subtraction and conversion paths.
 - Convenience quantity constructors for built-in unit domains.
 - Every public API ships with a runnable documentation example.
 
@@ -67,8 +68,10 @@ let in_meters = @qgeometry.kilometers(2.0).to(@si.meter)
 let load = @qmechanics.newtons(6.0)
 
 // Dimensionally invalid operations are rejected: `add`/`sub`/`to` raise
-// `DimensionMismatch` when the dimensions do not match.
+// `DimensionMismatch` when the dimensions do not match. Use `checked_*`
+// variants when you prefer `None` over raising.
 let total = distance.add(time) // raises DimensionMismatch
+let maybe_total = distance.checked_add(time) // None
 ```
 
 More worked examples (speed, acceleration, force, energy, conversion and
@@ -97,9 +100,11 @@ layers, never the other way around.
    units. `Dimension`, `Un`, and `Quantity` support `*` and `/` as shorthand for
    total algebraic composition; integer powers remain explicit via `.pow(n)`.
 
-Error handling follows a deliberate split: low-level *queries* return `Option`
-(e.g. `Un::conversion_factor`), while higher-level *operations* raise
-(`Quantity::add`/`sub`/`to` raise `DimensionMismatch`).
+Error handling follows a deliberate split: low-level *queries* and recoverable
+paths return `Option` (e.g. `Un::conversion_factor`,
+`Quantity::checked_add`/`checked_sub`/`checked_to`), while higher-level
+operations raise (`Quantity::add`/`sub`/`to` raise `DimensionMismatch` with the
+expected and actual dimensions).
 
 The unit collections are organized by domain so users import only what they
 need; each domain package depends only on `units/si`, with no cross-domain

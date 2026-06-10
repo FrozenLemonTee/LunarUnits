@@ -1,12 +1,33 @@
 ///|
 /// Raised when an operation requires two quantities (or a quantity and a target
 /// unit) to share the same dimension but they do not.
-pub suberror DimensionMismatch
+///
+/// The payload stores `(expected, actual)` dimensions.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = @unit.Un::base("m", @dimension.Dimension::length())
+///   let s = @unit.Un::base("s", @dimension.Dimension::time())
+///   let result = try? Quantity::new(1.0, m).to(s)
+///   match result {
+///     Err(DimensionMismatch((expected, actual))) => {
+///       assert_true(expected.is_same(@dimension.Dimension::time()))
+///       assert_true(actual.is_same(@dimension.Dimension::length()))
+///     }
+///     _ => fail("expected DimensionMismatch")
+///   }
+/// }
+/// ```
+pub suberror DimensionMismatch {
+  DimensionMismatch((@dimension.Dimension, @dimension.Dimension))
+} derive(Eq, Debug)
 
 ///|
 /// A physical quantity: a numeric value paired with a unit.
 ///
-/// `Quantity` carries no algebra of its own — addition and conversion go
+/// `Quantity` carries no algebra of its own: addition and conversion go
 /// through the unit layer's dimensional checks, while multiplication and
 /// division compose units via the unit (and ultimately algebra) layer.
 ///
@@ -144,6 +165,50 @@ pub fn Quantity::dimension(self : Quantity) -> @dimension.Dimension {
 }
 
 ///|
+/// Returns whether this quantity can be converted to `target`.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = @unit.Un::base("m", @dimension.Dimension::length())
+///   let km = @unit.Un::scaled("km", @dimension.Dimension::length(), 1000.0)
+///   let s = @unit.Un::base("s", @dimension.Dimension::time())
+///   let distance = Quantity::new(1.0, km)
+///   assert_true(distance.can_to(m))
+///   assert_false(distance.can_to(s))
+/// }
+/// ```
+pub fn Quantity::can_to(self : Quantity, target : @unit.Un) -> Bool {
+  self.u.is_compatible(target)
+}
+
+///|
+/// Converts the quantity to `target`, returning `None` when dimensions differ.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = @unit.Un::base("m", @dimension.Dimension::length())
+///   let km = @unit.Un::scaled("km", @dimension.Dimension::length(), 1000.0)
+///   let s = @unit.Un::base("s", @dimension.Dimension::time())
+///   let distance = Quantity::new(2.0, km)
+///   match distance.checked_to(m) {
+///     Some(converted) => assert_eq(converted.value(), 2000.0)
+///     None => fail("expected compatible conversion")
+///   }
+///   assert_true(distance.checked_to(s) is None)
+/// }
+/// ```
+pub fn Quantity::checked_to(self : Quantity, target : @unit.Un) -> Quantity? {
+  match self.u.conversion_factor(target) {
+    Some(factor) => Some({ v: self.v * factor, u: target })
+    None => None
+  }
+}
+
+///|
 /// Converts the quantity to `target`, keeping the same physical magnitude.
 /// Raises `DimensionMismatch` if the target unit has a different dimension.
 ///
@@ -164,9 +229,52 @@ pub fn Quantity::to(
   self : Quantity,
   target : @unit.Un,
 ) -> Quantity raise DimensionMismatch {
-  match self.u.conversion_factor(target) {
-    Some(factor) => { v: self.v * factor, u: target }
-    None => raise DimensionMismatch
+  match self.checked_to(target) {
+    Some(converted) => converted
+    None => raise DimensionMismatch((target.dimension(), self.dimension()))
+  }
+}
+
+///|
+/// Returns whether two quantities can be added.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = @unit.Un::base("m", @dimension.Dimension::length())
+///   let s = @unit.Un::base("s", @dimension.Dimension::time())
+///   let distance = Quantity::new(1.0, m)
+///   assert_true(distance.can_add(Quantity::new(2.0, m)))
+///   assert_false(distance.can_add(Quantity::new(2.0, s)))
+/// }
+/// ```
+pub fn Quantity::can_add(self : Quantity, other : Quantity) -> Bool {
+  self.dimension().is_same(other.dimension())
+}
+
+///|
+/// Adds two quantities, returning `None` when dimensions differ.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = @unit.Un::base("m", @dimension.Dimension::length())
+///   let km = @unit.Un::scaled("km", @dimension.Dimension::length(), 1000.0)
+///   let s = @unit.Un::base("s", @dimension.Dimension::time())
+///   let distance = Quantity::new(1.0, m)
+///   match distance.checked_add(Quantity::new(1.0, km)) {
+///     Some(total) => assert_eq(total.value(), 1001.0)
+///     None => fail("expected compatible addition")
+///   }
+///   assert_true(distance.checked_add(Quantity::new(1.0, s)) is None)
+/// }
+/// ```
+pub fn Quantity::checked_add(self : Quantity, other : Quantity) -> Quantity? {
+  match other.checked_to(self.u) {
+    Some(converted) => Some({ v: self.v + converted.v, u: self.u })
+    None => None
   }
 }
 
@@ -192,8 +300,52 @@ pub fn Quantity::add(
   self : Quantity,
   other : Quantity,
 ) -> Quantity raise DimensionMismatch {
-  let converted = other.to(self.u)
-  { v: self.v + converted.v, u: self.u }
+  match self.checked_add(other) {
+    Some(total) => total
+    None => raise DimensionMismatch((self.dimension(), other.dimension()))
+  }
+}
+
+///|
+/// Returns whether one quantity can be subtracted from another.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = @unit.Un::base("m", @dimension.Dimension::length())
+///   let s = @unit.Un::base("s", @dimension.Dimension::time())
+///   let distance = Quantity::new(5.0, m)
+///   assert_true(distance.can_sub(Quantity::new(2.0, m)))
+///   assert_false(distance.can_sub(Quantity::new(2.0, s)))
+/// }
+/// ```
+pub fn Quantity::can_sub(self : Quantity, other : Quantity) -> Bool {
+  self.dimension().is_same(other.dimension())
+}
+
+///|
+/// Subtracts `other` from `self`, returning `None` when dimensions differ.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let m = @unit.Un::base("m", @dimension.Dimension::length())
+///   let s = @unit.Un::base("s", @dimension.Dimension::time())
+///   let distance = Quantity::new(5.0, m)
+///   match distance.checked_sub(Quantity::new(2.0, m)) {
+///     Some(result) => assert_eq(result.value(), 3.0)
+///     None => fail("expected compatible subtraction")
+///   }
+///   assert_true(distance.checked_sub(Quantity::new(2.0, s)) is None)
+/// }
+/// ```
+pub fn Quantity::checked_sub(self : Quantity, other : Quantity) -> Quantity? {
+  match other.checked_to(self.u) {
+    Some(converted) => Some({ v: self.v - converted.v, u: self.u })
+    None => None
+  }
 }
 
 ///|
@@ -213,8 +365,10 @@ pub fn Quantity::sub(
   self : Quantity,
   other : Quantity,
 ) -> Quantity raise DimensionMismatch {
-  let converted = other.to(self.u)
-  { v: self.v - converted.v, u: self.u }
+  match self.checked_sub(other) {
+    Some(result) => result
+    None => raise DimensionMismatch((self.dimension(), other.dimension()))
+  }
 }
 
 ///|

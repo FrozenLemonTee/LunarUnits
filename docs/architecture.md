@@ -36,6 +36,17 @@ meaning as the underlying algebra:
   (`.add(...)`, `.sub(...)`, `.to(...)`) because they may raise
   `DimensionMismatch`.
 
+## Error Boundary
+
+The quantity layer exposes both raising and non-raising APIs:
+
+- `.add(...)`, `.sub(...)`, and `.to(...)` raise `DimensionMismatch` when
+  dimensions differ. The error carries the expected and actual dimensions.
+- `.checked_add(...)`, `.checked_sub(...)`, and `.checked_to(...)` return
+  `None` instead of raising.
+- `.can_add(...)`, `.can_sub(...)`, and `.can_to(...)` provide lightweight
+  compatibility checks for control-flow decisions.
+
 ## MVP Boundary
 
 The first implementation phase should focus on:

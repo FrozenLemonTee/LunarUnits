@@ -10,7 +10,9 @@ import {
 // Values
 
 // Errors
-pub suberror DimensionMismatch
+pub suberror DimensionMismatch {
+  DimensionMismatch((@dimension.Dimension, @dimension.Dimension))
+} derive(Eq, @debug.Debug)
 
 // Types and methods
 pub struct Quantity {
@@ -18,6 +20,12 @@ pub struct Quantity {
   u : @unit.Un
 } derive(Eq, @debug.Debug)
 pub fn Quantity::add(Self, Self) -> Self raise DimensionMismatch
+pub fn Quantity::can_add(Self, Self) -> Bool
+pub fn Quantity::can_sub(Self, Self) -> Bool
+pub fn Quantity::can_to(Self, @unit.Un) -> Bool
+pub fn Quantity::checked_add(Self, Self) -> Self?
+pub fn Quantity::checked_sub(Self, Self) -> Self?
+pub fn Quantity::checked_to(Self, @unit.Un) -> Self?
 pub fn Quantity::dimension(Self) -> @dimension.Dimension
 pub fn Quantity::div(Self, Self) -> Self
 pub fn Quantity::mul(Self, Self) -> Self

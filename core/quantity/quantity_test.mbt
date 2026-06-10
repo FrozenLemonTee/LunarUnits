@@ -40,12 +40,33 @@ test "add converts compatible units" {
 }
 
 ///|
+/// checked_add returns Some for compatible dimensions and None otherwise.
+test "checked add" {
+  let total = Quantity::new(1.0, meter()).checked_add(
+    Quantity::new(1.0, kilometer()),
+  )
+  assert_true(total is Some(_))
+  assert_eq(total.unwrap().value(), 1001.0)
+  assert_true(
+    Quantity::new(1.0, meter()).checked_add(Quantity::new(1.0, second()))
+    is None,
+  )
+}
+
+///|
 /// Adding incompatible dimensions raises DimensionMismatch.
 test "add incompatible raises" {
   let result = try? Quantity::new(1.0, meter()).add(
     Quantity::new(1.0, second()),
   )
   assert_true(result is Err(_))
+  match result {
+    Err(DimensionMismatch((expected, actual))) => {
+      assert_true(expected.is_same(@dimension.Dimension::length()))
+      assert_true(actual.is_same(@dimension.Dimension::time()))
+    }
+    _ => fail("expected DimensionMismatch")
+  }
 }
 
 ///|
@@ -56,6 +77,24 @@ test "sub" {
 }
 
 ///|
+/// checked_sub returns None for incompatible dimensions.
+test "checked sub" {
+  assert_true(Quantity::new(5.0, meter()).can_sub(Quantity::new(2.0, meter())))
+  assert_false(
+    Quantity::new(5.0, meter()).can_sub(Quantity::new(2.0, second())),
+  )
+  let result = Quantity::new(5.0, meter()).checked_sub(
+    Quantity::new(2.0, meter()),
+  )
+  assert_true(result is Some(_))
+  assert_eq(result.unwrap().value(), 3.0)
+  assert_true(
+    Quantity::new(5.0, meter()).checked_sub(Quantity::new(2.0, second()))
+    is None,
+  )
+}
+
+///|
 /// Conversion preserves the physical magnitude.
 test "to converts value" {
   let in_m = Quantity::new(2.0, kilometer()).to(meter())
@@ -63,10 +102,28 @@ test "to converts value" {
 }
 
 ///|
+/// checked_to returns Some for compatible units and None otherwise.
+test "checked to" {
+  let length = Quantity::new(2.0, kilometer())
+  assert_true(length.can_to(meter()))
+  assert_false(length.can_to(second()))
+  assert_true(length.checked_to(meter()) is Some(_))
+  assert_eq(length.checked_to(meter()).unwrap().value(), 2000.0)
+  assert_true(length.checked_to(second()) is None)
+}
+
+///|
 /// Conversion to an incompatible unit raises.
 test "to incompatible raises" {
   let result = try? Quantity::new(1.0, meter()).to(second())
   assert_true(result is Err(_))
+  match result {
+    Err(DimensionMismatch((expected, actual))) => {
+      assert_true(expected.is_same(@dimension.Dimension::time()))
+      assert_true(actual.is_same(@dimension.Dimension::length()))
+    }
+    _ => fail("expected DimensionMismatch")
+  }
 }
 
 ///|

@@ -24,6 +24,17 @@ You can browse and install extra skills here:
 - Try to keep deprecated blocks in file called `deprecated.mbt` in each
   directory.
 
+## Documentation and style
+
+- Project documentation and ordinary source comments should be written in
+  English for consistency.
+
+- Every public API must include runnable documentation examples where practical,
+  following MoonBit doc-test style.
+
+- Follow the style used by `moonbitlang/core` for public API documentation,
+  examples, tests, and generated interface hygiene.
+
 ## Tooling
 
 - `moon fmt` is used to format your code properly.
