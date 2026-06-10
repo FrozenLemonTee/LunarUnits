@@ -1,0 +1,32 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/quantities/qinformation"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub fn bits(Double) -> @quantity.Quantity
+
+pub fn bytes(Double) -> @quantity.Quantity
+
+pub fn gibibytes(Double) -> @quantity.Quantity
+
+pub fn gigabytes(Double) -> @quantity.Quantity
+
+pub fn kibibytes(Double) -> @quantity.Quantity
+
+pub fn kilobytes(Double) -> @quantity.Quantity
+
+pub fn mebibytes(Double) -> @quantity.Quantity
+
+pub fn megabytes(Double) -> @quantity.Quantity
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
