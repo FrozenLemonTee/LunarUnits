@@ -5,7 +5,7 @@ quantities. These packages do not introduce new quantity types; every function
 returns `@quantity.Quantity` built from the corresponding unit package.
 
 - `qsi`: SI base quantity constructors.
-- `qangle`: plane angle constructors.
+- `qangle`: plane angle constructors, plus `cycles` and `hertz` (frequency).
 - `qgeometry`: length, area and volume constructors.
 - `qmass`: mass and density constructors.
 - `qmechanics`: force, pressure, velocity, energy and power constructors.

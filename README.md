@@ -140,7 +140,7 @@ dimensions/
   count_dimension        extension dimension for discrete counts
 units/
   si           SI base units
-  angle        radian, degree, turn, arcminute and arcsecond
+  angle        radian, degree, turn, arcminute, arcsecond, cycle, hertz
   solid_angle  steradian, square degree, spat
   geometry     length, area, volume
   mass         mass, density
@@ -152,7 +152,7 @@ units/
   currency     dollar, cent, k$, M$ (same-currency only)
   count        each, dozen, gross
 quantities/
-  qangle       plane angle quantity constructors
+  qangle       plane angle constructors, plus cycle and hertz (frequency)
   qsolidangle  solid angle quantity constructors
   qsi          SI base quantity constructors
   qgeometry    geometry quantity constructors

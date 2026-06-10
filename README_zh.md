@@ -103,7 +103,7 @@ dimensions/
   count_dimension        离散计数扩展维度
 units/
   si           SI 基本单位
-  angle        弧度、角度、整圈、角分、角秒
+  angle        弧度、角度、整圈、角分、角秒、周（cycle）、赫兹（Hz）
   solid_angle  球面度、平方度、整球面
   geometry     长度、面积、体积
   mass         质量、密度
@@ -115,7 +115,7 @@ units/
   currency     美元、美分、k$、M$（仅限同一货币换算）
   count        个、打、罗
 quantities/
-  qangle       平面角物理量便捷构造函数
+  qangle       平面角物理量构造函数，含周（cycle）与赫兹（Hz，频率）
   qsolidangle  立体角物理量便捷构造函数
   qsi          SI 基本物理量便捷构造函数
   qgeometry    几何物理量便捷构造函数
