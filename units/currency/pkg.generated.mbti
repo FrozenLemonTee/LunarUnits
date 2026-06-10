@@ -1,0 +1,24 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/units/currency"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Values
+pub let cent : @unit.Un
+
+pub let dollar : @unit.Un
+
+pub let kilodollar : @unit.Un
+
+pub let megadollar : @unit.Un
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

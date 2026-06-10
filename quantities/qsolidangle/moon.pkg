@@ -1,0 +1,5 @@
+// Convenience quantity constructors for solid angle units.
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/units/solid_angle",
+}
