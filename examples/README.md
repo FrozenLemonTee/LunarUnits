@@ -15,6 +15,8 @@ Covered:
 - Work (energy) = force × distance.
 - Same-dimension conversion (kilometres to metres).
 - Rejection of dimensionally invalid operations (length + time).
+- Extension dimensions: information, angle, currency, count, frequency.
+- Formatting one quantity in ASCII, SI (Unicode) and LaTeX notations.
 
 Run them with:
 

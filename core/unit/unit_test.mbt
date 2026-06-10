@@ -113,3 +113,40 @@ test "format unit ascii" {
   assert_eq(format_unit(m / (kg * s.pow(2))), "m/(kg*s^2)")
   assert_eq(format_unit(m / m), "1")
 }
+
+///|
+/// SI style prints superscript exponents and a middle-dot separator.
+test "format unit si" {
+  let m = Un::base("m", @dimension.Dimension::length())
+  let s = Un::base("s", @dimension.Dimension::time())
+  let kg = Un::base("kg", @dimension.Dimension::mass())
+  assert_eq(format_unit_with(m / s.pow(2), FormatStyle::Si), "m/s²")
+  assert_eq(format_unit_with(kg * m / s.pow(2), FormatStyle::Si), "kg·m/s²")
+  assert_eq(format_unit_with(m.pow(2), FormatStyle::Si), "m²")
+  assert_eq(
+    format_unit_with(m / (kg * s.pow(2)), FormatStyle::Si),
+    "m/(kg·s²)",
+  )
+  assert_eq(format_unit_with(m.pow(10), FormatStyle::Si), "m¹⁰")
+  assert_eq(format_unit_with(m / m, FormatStyle::Si), "1")
+}
+
+///|
+/// LaTeX style wraps symbols in `\mathrm` and braces exponents.
+test "format unit latex" {
+  let m = Un::base("m", @dimension.Dimension::length())
+  let s = Un::base("s", @dimension.Dimension::time())
+  let kg = Un::base("kg", @dimension.Dimension::mass())
+  assert_eq(
+    format_unit_with(m / s.pow(2), FormatStyle::Latex),
+    "\\mathrm{m}/\\mathrm{s}^{2}",
+  )
+  assert_eq(
+    format_unit_with(kg * m, FormatStyle::Latex),
+    "\\mathrm{kg}\\cdot \\mathrm{m}",
+  )
+  assert_eq(
+    format_unit_with(m / (kg * s.pow(2)), FormatStyle::Latex),
+    "\\mathrm{m}/(\\mathrm{kg}\\cdot \\mathrm{s}^{2})",
+  )
+}

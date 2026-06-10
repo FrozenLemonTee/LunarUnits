@@ -486,6 +486,8 @@ pub fn Quantity::scale(self : Quantity, factor : Double) -> Quantity {
 ///|
 /// Formats a quantity as `<value> <unit>` using compact ASCII unit notation.
 ///
+/// For other notations see [`format_quantity_with`].
+///
 /// # Example
 ///
 /// ```mbt check
@@ -497,5 +499,29 @@ pub fn Quantity::scale(self : Quantity, factor : Double) -> Quantity {
 /// }
 /// ```
 pub fn format_quantity(quantity : Quantity) -> String {
-  "\{quantity.value()} \{@unit.format_unit(quantity.unit())}"
+  format_quantity_with(quantity, @unit.FormatStyle::Ascii)
+}
+
+///|
+/// Formats a quantity as `<value> <unit>` using the given
+/// [`@unit.FormatStyle`].
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let meter = @unit.Un::base("m", @dimension.Dimension::length())
+///   let second = @unit.Un::base("s", @dimension.Dimension::time())
+///   let acceleration = Quantity::new(9.8, meter / second.pow(2))
+///   assert_eq(
+///     format_quantity_with(acceleration, @unit.FormatStyle::Si),
+///     "9.8 m/s²",
+///   )
+/// }
+/// ```
+pub fn format_quantity_with(
+  quantity : Quantity,
+  style : @unit.FormatStyle,
+) -> String {
+  "\{quantity.value()} \{@unit.format_unit_with(quantity.unit(), style)}"
 }

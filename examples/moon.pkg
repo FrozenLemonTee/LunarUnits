@@ -4,6 +4,7 @@ import {
   "FrozenLemonTee/LunarUnits/constants/physics",
   "FrozenLemonTee/LunarUnits/core/dimension",
   "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/core/unit",
   "FrozenLemonTee/LunarUnits/units/si",
   "FrozenLemonTee/LunarUnits/units/angle",
   "FrozenLemonTee/LunarUnits/units/mechanics",
