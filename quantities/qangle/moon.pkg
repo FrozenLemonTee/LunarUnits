@@ -1,0 +1,5 @@
+// Convenience quantity constructors for plane angle units.
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/units/angle",
+}

@@ -1,0 +1,26 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/units/angle"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Values
+pub let arcminute : @unit.Un
+
+pub let arcsecond : @unit.Un
+
+pub let degree : @unit.Un
+
+pub let radian : @unit.Un
+
+pub let turn : @unit.Un
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
