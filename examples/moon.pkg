@@ -1,9 +1,15 @@
 // Runnable examples for LunarUnits. Each example is a self-checking `test`, so
 // `moon test` runs and verifies them all.
 import {
+  "FrozenLemonTee/LunarUnits/constants/physics",
+  "FrozenLemonTee/LunarUnits/core/dimension",
   "FrozenLemonTee/LunarUnits/core/quantity",
   "FrozenLemonTee/LunarUnits/units/si",
+  "FrozenLemonTee/LunarUnits/units/angle",
   "FrozenLemonTee/LunarUnits/units/mechanics",
+  "FrozenLemonTee/LunarUnits/units/information",
+  "FrozenLemonTee/LunarUnits/quantities/qangle",
   "FrozenLemonTee/LunarUnits/quantities/qgeometry",
+  "FrozenLemonTee/LunarUnits/quantities/qinformation",
   "FrozenLemonTee/LunarUnits/quantities/qmechanics",
 }
