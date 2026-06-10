@@ -77,3 +77,38 @@ pub fn arcminutes(value : Double) -> @quantity.Quantity {
 pub fn arcseconds(value : Double) -> @quantity.Quantity {
   @quantity.Quantity::new(value, @angle.arcsecond)
 }
+
+///|
+/// Creates a plane angle quantity in cycles (full turns).
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let q = cycles(1.0)
+///   assert_eq(q.value(), 1.0)
+///   assert_eq(q.to(@angle.radian).value(), 6.283185307179586)
+/// }
+/// ```
+pub fn cycles(value : Double) -> @quantity.Quantity {
+  @quantity.Quantity::new(value, @angle.cycle)
+}
+
+///|
+/// Creates a frequency quantity in hertz (cycles per second).
+///
+/// The unit lives in the angle/time dimension, so the result converts against
+/// radians per second, with 1 Hz = 2*pi rad/s.
+///
+/// # Example
+///
+/// ```mbt check
+/// test {
+///   let q = hertz(50.0)
+///   assert_eq(q.value(), 50.0)
+///   assert_true(q.unit().is_compatible(@angle.hertz))
+/// }
+/// ```
+pub fn hertz(value : Double) -> @quantity.Quantity {
+  @quantity.Quantity::new(value, @angle.hertz)
+}

@@ -1,5 +1,7 @@
-// Plane angle units.
+// Plane angle units, plus cycle and hertz derived from the angle dimension.
+// Depends on SI base units so hertz can be defined as cycles per second.
 import {
   "FrozenLemonTee/LunarUnits/core/unit",
   "FrozenLemonTee/LunarUnits/dimensions/angle_dimension",
+  "FrozenLemonTee/LunarUnits/units/si",
 }
