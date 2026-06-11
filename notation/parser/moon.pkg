@@ -1,0 +1,18 @@
+// String parser: turns unit/quantity strings into core values. Atomic symbols
+// are resolved through a caller-supplied catalog; operators, exponents and
+// parentheses are handled here. It never holds global state and never
+// participates in core unit identity.
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/core/dimension",
+  "FrozenLemonTee/LunarUnits/notation/catalog",
+  "moonbitlang/core/string",
+}
+
+// Black-box tests build catalogs from presets and assert against SI units.
+import {
+  "FrozenLemonTee/LunarUnits/units/si",
+  "FrozenLemonTee/LunarUnits/units/mechanics",
+  "FrozenLemonTee/LunarUnits/notation/preset",
+} for "test"

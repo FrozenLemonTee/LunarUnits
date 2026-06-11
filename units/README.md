@@ -17,5 +17,6 @@ The `units` area is reserved for built-in unit packages.
 - `count`: discrete-count units such as each, dozen and gross.
 
 Quantity constructors live in `quantities/*`. Symbol lookup for these units is
-provided by `notation/preset` (one catalog per package, plus `all()`). Broader
-engineering units and a string parser belong to later milestones.
+provided by `notation/preset` (one catalog per package, plus `all()`), and
+`notation/parser` parses unit/quantity strings on top of a catalog. Broader
+engineering units belong to later milestones.

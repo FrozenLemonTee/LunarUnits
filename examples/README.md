@@ -18,6 +18,7 @@ Covered:
 - Extension dimensions: information, angle, currency, count, frequency.
 - Formatting one quantity in ASCII, SI (Unicode) and LaTeX notations.
 - Resolving unit symbols through a preset catalog and extending it.
+- Parsing units and quantities from strings (`m/s^2`, `9.8 m/s^2`).
 
 Run them with:
 

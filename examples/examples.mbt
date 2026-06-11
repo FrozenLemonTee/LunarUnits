@@ -174,3 +174,21 @@ test "resolve unit symbols through a preset catalog" {
   assert_true(extended.contains("force"))
   assert_false(catalog.contains("force"))
 }
+
+///|
+/// The parser turns strings into units and quantities, resolving symbols
+/// through a catalog and composing `*`, `/`, `^` and parentheses. It never
+/// panics: the `*_opt` variants return None on a parse error.
+test "parse units and quantities from strings" {
+  let catalog = @preset.all()
+  // A unit expression composes operators and exponents.
+  let accel = @parser.parse_unit(catalog, "m/s^2")
+  assert_true(accel.is_compatible(@si.meter / @si.second.pow(2)))
+  // A quantity is a number followed by a unit.
+  let q = @parser.parse_quantity(catalog, "9.8 m/s^2")
+  assert_eq(q.value(), 9.8)
+  // When the value is already a Double, attach the unit from a string.
+  assert_eq(@parser.quantity(catalog, 9.8, "m/s^2").unit(), accel)
+  // An unknown symbol yields None rather than raising.
+  assert_true(@parser.parse_unit_opt(catalog, "m/zz") is None)
+}

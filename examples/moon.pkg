@@ -6,6 +6,7 @@ import {
   "FrozenLemonTee/LunarUnits/core/quantity",
   "FrozenLemonTee/LunarUnits/core/unit",
   "FrozenLemonTee/LunarUnits/notation/preset",
+  "FrozenLemonTee/LunarUnits/notation/parser",
   "FrozenLemonTee/LunarUnits/units/si",
   "FrozenLemonTee/LunarUnits/units/angle",
   "FrozenLemonTee/LunarUnits/units/mechanics",
