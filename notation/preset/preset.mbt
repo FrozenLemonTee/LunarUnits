@@ -29,6 +29,20 @@ pub fn si() -> @catalog.Catalog {
 }
 
 ///|
+/// Time-duration units: `min`, `h`, `d`, `ms`, `µs`, `ns`. The second's symbol
+/// `s` is provided by `si()`.
+pub fn time() -> @catalog.Catalog {
+  @catalog.Catalog::new().with_all([
+    ("min", @time.minute),
+    ("h", @time.hour),
+    ("d", @time.day),
+    ("ms", @time.millisecond),
+    ("µs", @time.microsecond),
+    ("ns", @time.nanosecond),
+  ])
+}
+
+///|
 /// Length, area and volume units: `km`, `cm`, `mm`, `in`, `ft`, `mi`, `m²`,
 /// `ha`, `m³`, `L`, `mL`, `gal`.
 pub fn geometry() -> @catalog.Catalog {
@@ -216,6 +230,7 @@ pub fn count() -> @catalog.Catalog {
 /// ```
 pub fn all() -> @catalog.Catalog {
   si()
+  .merge(time())
   .merge(geometry())
   .merge(mass())
   .merge(mechanics())

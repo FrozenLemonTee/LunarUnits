@@ -5,6 +5,7 @@
 import {
   "FrozenLemonTee/LunarUnits/notation/catalog",
   "FrozenLemonTee/LunarUnits/units/si",
+  "FrozenLemonTee/LunarUnits/units/time",
   "FrozenLemonTee/LunarUnits/units/geometry",
   "FrozenLemonTee/LunarUnits/units/mass",
   "FrozenLemonTee/LunarUnits/units/mechanics",

@@ -1,0 +1,7 @@
+// Convenience quantity constructors for time-duration units. The second has a
+// constructor in `quantities/qsi`; this package adds the other fixed-length
+// durations.
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/units/time",
+}

@@ -14,6 +14,8 @@ test "si has the seven base units" {
 /// Each per-package catalog binds its conventional symbols to the matching
 /// units and stays scoped to its own package.
 test "per-package catalogs map their symbols" {
+  assert_eq(time().lookup("h").unwrap(), @time.hour)
+  assert_eq(time().lookup("ns").unwrap(), @time.nanosecond)
   assert_eq(geometry().lookup("km").unwrap(), @geometry.kilometer)
   assert_eq(geometry().lookup("m²").unwrap(), @geometry.square_meter)
   assert_eq(mass().lookup("lb").unwrap(), @mass.pound)
@@ -38,6 +40,7 @@ test "per-package catalogs map their symbols" {
 /// Each catalog includes every unit exported by its package.
 test "per-package catalogs are complete" {
   assert_eq(si().symbols().length(), 7)
+  assert_eq(time().symbols().length(), 6)
   assert_eq(geometry().symbols().length(), 12)
   assert_eq(mass().symbols().length(), 7)
   assert_eq(mechanics().symbols().length(), 18)
@@ -66,11 +69,12 @@ test "all spans every package without collisions" {
   let catalog = all()
   for
     symbol in [
-      "m", "km", "lb", "N", "Pa·s", "BTU", "Ω", "Hz", "sr", "GiB", "k$", "gr",
+      "m", "h", "km", "lb", "N", "Pa·s", "BTU", "Ω", "Hz", "sr", "GiB", "k$", "gr",
     ] {
     assert_true(catalog.lookup(symbol) is Some(_))
   }
   let expected = si().symbols().length() +
+    time().symbols().length() +
     geometry().symbols().length() +
     mass().symbols().length() +
     mechanics().symbols().length() +

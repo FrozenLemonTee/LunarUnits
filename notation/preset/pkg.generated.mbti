@@ -32,6 +32,8 @@ pub fn solid_angle() -> @catalog.Catalog
 
 pub fn thermal() -> @catalog.Catalog
 
+pub fn time() -> @catalog.Catalog
+
 // Errors
 
 // Types and methods
