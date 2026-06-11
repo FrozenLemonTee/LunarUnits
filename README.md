@@ -32,6 +32,8 @@ type system.
   and LaTeX (`\mathrm{m}/\mathrm{s}^{2}`) notations.
 - Immutable symbol catalogs (`notation/catalog`) with prebuilt per-domain
   catalogs (`notation/preset`) for resolving and extending unit symbols.
+- A string parser (`notation/parser`) for unit and quantity expressions
+  (`m/s^2`, `9.8 m/s^2`), with classified, non-panicking errors.
 - Convenience quantity constructors for built-in unit domains.
 - Extension dimensions and common physical constants.
 - Every public API ships with a runnable documentation example.
@@ -50,6 +52,7 @@ import {
   "FrozenLemonTee/LunarUnits/units/si",
   "FrozenLemonTee/LunarUnits/constants/physics",
   "FrozenLemonTee/LunarUnits/notation/preset",
+  "FrozenLemonTee/LunarUnits/notation/parser",
   "FrozenLemonTee/LunarUnits/quantities/qgeometry",
   "FrozenLemonTee/LunarUnits/quantities/qinformation",
   "FrozenLemonTee/LunarUnits/quantities/qmechanics",
@@ -83,9 +86,11 @@ let load = @qmechanics.newtons(6.0)
 let light_second = @physics.speed_of_light * @quantity.Quantity::new(1.0, @si.second)
 let memory = @qinformation.kibibytes(1.0)
 
-// Resolve unit symbols through a catalog (the basis for parsing and extension).
+// Resolve unit symbols through a catalog, or parse whole expressions.
 let catalog = @preset.all()
 let newton_unit = catalog.lookup("N").unwrap() // the newton, from its symbol
+let accel_unit = @parser.parse_unit(catalog, "m/s^2") // composed from a string
+let g = @parser.parse_quantity(catalog, "9.8 m/s^2") // value 9.8, unit m/s^2
 
 // Dimensionally invalid operations are rejected: `add`/`sub`/`to` raise
 // `DimensionMismatch` when the dimensions do not match. Use `checked_*`
@@ -127,8 +132,11 @@ render user-facing strings in ASCII, SI/Unicode or LaTeX notation.
 Symbol resolution lives in a separate `notation/` layer: `notation/catalog`
 provides an immutable `symbol -> unit` lookup table that never participates in
 core unit identity, and `notation/preset` ships one ready-made catalog per unit
-package (plus `all()` for the union). This is the foundation for a future
-parser and for user-defined unit symbols.
+package (plus `all()` for the union). On top of those, `notation/parser` parses
+unit and quantity strings — atomic symbols come from the catalog while the
+parser handles `*`, `/`, `^`, integer exponents and parentheses, returning
+classified `ParseError`s (or `None` from the `*_opt` variants) instead of
+panicking.
 
 Error handling follows a deliberate split: low-level *queries* and recoverable
 paths return `Option` (e.g. `Un::conversion_factor`,
@@ -185,6 +193,7 @@ constants/
 notation/
   catalog      immutable symbol -> unit lookup table (Catalog)
   preset       prebuilt catalogs, one per unit package, plus all()
+  parser       parse unit/quantity strings (parse_unit, parse_quantity)
 examples/      runnable, self-checking examples
 docs/          design and roadmap notes
 ```

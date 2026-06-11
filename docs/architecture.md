@@ -90,10 +90,18 @@ model:
   of its package's units, plus `all()` for the collision-free union. This
   package concentrates the dependency on the unit libraries so `notation/catalog`
   stays decoupled from any particular unit set.
+- `notation/parser` parses unit and quantity strings. Atomic symbols are
+  resolved through a caller-supplied catalog; the parser handles `*`, `/`, `^`,
+  integer exponents and parentheses via recursive descent, and the literal `1`
+  denotes the dimensionless unit. `parse_unit`, `parse_quantity` and
+  `quantity(value, unit_string)` raise a classified `ParseError`; `*_opt`
+  variants return `Option` instead. It depends on `core/unit`, `core/quantity`
+  and `notation/catalog`, but not on any `units/*` package.
 
-The catalog is the forward (`symbol -> unit`) half needed to unblock a future
-parser. Reverse lookup (`unit -> preferred symbol`, for derived-unit
-recognition in the formatter) and SI-prefix handling are deferred.
+The catalog is the forward (`symbol -> unit`) half that powers the parser.
+Reverse lookup (`unit -> preferred symbol`, for derived-unit recognition in the
+formatter), SI-prefix handling, and recombining multi-token catalog keys such
+as `km/h` are deferred.
 
 ## Extension Boundary
 

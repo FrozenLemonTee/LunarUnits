@@ -1,0 +1,40 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/notation/parser"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/notation/catalog",
+}
+
+// Values
+pub fn parse_quantity(@catalog.Catalog, String) -> @quantity.Quantity raise ParseError
+
+pub fn parse_quantity_opt(@catalog.Catalog, String) -> @quantity.Quantity?
+
+pub fn parse_unit(@catalog.Catalog, String) -> @unit.Un raise ParseError
+
+pub fn parse_unit_opt(@catalog.Catalog, String) -> @unit.Un?
+
+pub fn quantity(@catalog.Catalog, Double, String) -> @quantity.Quantity raise ParseError
+
+pub fn quantity_opt(@catalog.Catalog, Double, String) -> @quantity.Quantity?
+
+// Errors
+pub suberror ParseError {
+  UnknownUnit(String)
+  UnexpectedChar(Char, Int)
+  UnexpectedEnd
+  InvalidNumber(String)
+  InvalidExponent(String)
+  EmptyInput
+  TrailingInput(Int)
+} derive(Eq)
+pub impl Show for ParseError
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+
