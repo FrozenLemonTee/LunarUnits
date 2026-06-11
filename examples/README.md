@@ -19,6 +19,9 @@ Covered:
 - Formatting one quantity in ASCII, SI (Unicode) and LaTeX notations.
 - Resolving unit symbols through a preset catalog and extending it.
 - Parsing units and quantities from strings (`m/s^2`, `9.8 m/s^2`).
+- Absolute temperatures and intervals on affine scales (°C, °F, K).
+- Time durations (linear) versus instants (affine points) and their difference.
+- Decibel levels (dBm) and gains: linear bridge, shift, and power combining.
 
 Run them with:
 

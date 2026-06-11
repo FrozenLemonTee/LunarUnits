@@ -192,3 +192,67 @@ test "parse units and quantities from strings" {
   // An unknown symbol yields None rather than raising.
   assert_true(@parser.parse_unit_opt(catalog, "m/zz") is None)
 }
+
+///|
+/// Temperature is an affine scale: an absolute point (°C, °F, K) converts with
+/// scale AND offset, while a temperature difference is an ordinary linear
+/// quantity. The two are different types, so the classic "absolute vs interval"
+/// mistake is impossible.
+test "absolute temperatures and intervals" {
+  // An absolute point converts with scale and offset: 100 °C is 373.15 K.
+  let boiling = @affine.Point::new(100.0, @affine.celsius)
+  assert_eq(boiling.to_base().value(), 373.15)
+  // Cross-scale conversion: 212 °F is 100 °C.
+  assert_eq(
+    @affine.Point::new(212.0, @affine.fahrenheit).to(@affine.celsius).value(),
+    100.0,
+  )
+  // The difference between two points is a plain Quantity in kelvin (the
+  // offset cancels): 100 °C minus 20 °C is 80 K.
+  assert_eq(
+    boiling.difference(@affine.Point::new(20.0, @affine.celsius)).value(),
+    80.0,
+  )
+  // Shifting a point by an interval yields another point: 20 °C + 5 K = 25 °C.
+  let warmed = @affine.Point::new(20.0, @affine.celsius).shift(
+    @quantity.Quantity::new(5.0, @si.kelvin),
+  )
+  assert_eq(warmed.value(), 25.0)
+}
+
+///|
+/// Time durations are ordinary linear units (fixed multiples of the second),
+/// distinct from absolute instants. A duration converts across units like any
+/// quantity; an instant is an affine point on a seconds-from-epoch scale, and
+/// the difference of two instants is a duration.
+test "time durations and instants" {
+  // A duration is a plain quantity: 2 hours is 120 minutes.
+  assert_eq(@qtime.hours(2.0).to(@time.minute).value(), 120.0)
+  // Instants are affine points; their difference is a duration in seconds,
+  // which converts to any time unit.
+  let epoch = @affine.AffineUn::new("s", @si.second, 1.0, 0.0)
+  let start = @affine.Point::new(0.0, epoch)
+  let finish = @affine.Point::new(7200.0, epoch)
+  assert_eq(finish.difference(start).to(@time.hour).value(), 2.0)
+}
+
+///|
+/// Decibels are a logarithmic scale: a Level is absolute (it carries a
+/// reference, e.g. dBm = 1 mW) while a Gain is a pure ratio. A level bridges to
+/// a linear quantity, a gain shifts it, and combining two equal power levels
+/// adds about 3 dB (power doubling), not 6 dB.
+test "decibel levels and gains" {
+  // 30 dBm is 1 W.
+  let power = @logarithmic.Level::new(30.0, @logarithmic.dbm()).to_linear()
+  assert_true(power.unit().is_compatible(@mechanics.watt))
+  // A 3 dB gain shifts 30 dBm to 33 dBm.
+  let amplified = @logarithmic.Level::new(30.0, @logarithmic.dbm()).shift(
+    @logarithmic.Gain::new(3.0, @logarithmic.decibel_power),
+  )
+  assert_eq(amplified.value(), 33.0)
+  // Two incoherent 20 dBm sources combine to ~23 dBm (power adds), not 40 dBm.
+  let combined = @logarithmic.Level::new(20.0, @logarithmic.dbm()).combine(
+    @logarithmic.Level::new(20.0, @logarithmic.dbm()),
+  )
+  assert_true(combined.value() > 23.0 && combined.value() < 23.1)
+}

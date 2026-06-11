@@ -21,7 +21,7 @@ type system.
 - `Quantity` — a numeric value paired with a unit.
 - Seven base dimensions and a minimal normalized symbolic algebra behind them.
 - SI base units and a growing set of common units grouped by domain
-  (geometry, mass, mechanics, fluid, thermal, electromagnetism, angle,
+  (time, geometry, mass, mechanics, fluid, thermal, electromagnetism, angle,
   solid_angle, information, currency, count).
 - Addition, subtraction, multiplication, division and integer powers, with
   units composed automatically.
@@ -34,6 +34,10 @@ type system.
   catalogs (`notation/preset`) for resolving and extending unit symbols.
 - A string parser (`notation/parser`) for unit and quantity expressions
   (`m/s^2`, `9.8 m/s^2`), with classified, non-panicking errors.
+- Affine scales (`affine/`) for absolute points such as temperature (°C, °F, K,
+  °R), distinguishing an absolute point from an interval by type.
+- Logarithmic scales (`logarithmic/`) for levels (dBm, dBW, dBV) and gains
+  (dB, Np), with power vs root-power kept distinct.
 - Convenience quantity constructors for built-in unit domains.
 - Extension dimensions and common physical constants.
 - Every public API ships with a runnable documentation example.
@@ -53,6 +57,8 @@ import {
   "FrozenLemonTee/LunarUnits/constants/physics",
   "FrozenLemonTee/LunarUnits/notation/preset",
   "FrozenLemonTee/LunarUnits/notation/parser",
+  "FrozenLemonTee/LunarUnits/affine",
+  "FrozenLemonTee/LunarUnits/logarithmic",
   "FrozenLemonTee/LunarUnits/quantities/qgeometry",
   "FrozenLemonTee/LunarUnits/quantities/qinformation",
   "FrozenLemonTee/LunarUnits/quantities/qmechanics",
@@ -91,6 +97,10 @@ let catalog = @preset.all()
 let newton_unit = catalog.lookup("N").unwrap() // the newton, from its symbol
 let accel_unit = @parser.parse_unit(catalog, "m/s^2") // composed from a string
 let g = @parser.parse_quantity(catalog, "9.8 m/s^2") // value 9.8, unit m/s^2
+
+// Temperature is an affine scale: absolute points convert with an offset.
+let body = @affine.Point::new(37.0, @affine.celsius)
+let body_k = body.to_base() // 310.15 K, as a linear Quantity
 
 // Dimensionally invalid operations are rejected: `add`/`sub`/`to` raise
 // `DimensionMismatch` when the dimensions do not match. Use `checked_*`
@@ -138,6 +148,24 @@ parser handles `*`, `/`, `^`, integer exponents and parentheses, returning
 classified `ParseError`s (or `None` from the `*_opt` variants) instead of
 panicking.
 
+Non-linear scales stay out of the multiplicative core. The `affine/` package
+models absolute points whose conversion is `value * scale + offset` (e.g.
+temperature). It follows the affine-space convention used by boost.units and
+Pint: an absolute `Point` (`20 °C`) is a distinct type from an interval (an
+ordinary `Quantity` in kelvin), so `point - point` gives an interval,
+`point + interval` gives a point, and the nonsensical `point + point` or
+`point * scalar` simply do not exist. `Un` keeps no offset; the generic
+`AffineUn`/`Point` types are user-extensible (temperature is just the shipped
+preset).
+
+The `logarithmic/` package handles decibels and nepers on the same
+"absolute vs relative" principle, following Unitful.jl: a `Level` is absolute
+(it carries a reference, so `30 dBm` knows it means 1 W) while a `Gain` is a pure
+ratio (`3 dB`). Levels bridge to linear quantities via `to_linear`/`from_linear`,
+a gain shifts a level, the difference of two levels is a gain, and combining two
+equal power levels adds about 3 dB (power doubling) rather than 6. Power and
+root-power scales (factor 10 vs 20) are kept distinct and never auto-converted.
+
 Error handling follows a deliberate split: low-level *queries* and recoverable
 paths return `Option` (e.g. `Un::conversion_factor`,
 `Quantity::checked_add`/`checked_sub`/`checked_to`), while higher-level
@@ -164,6 +192,7 @@ dimensions/
   count_dimension        extension dimension for discrete counts
 units/
   si           SI base units
+  time         minute, hour, day, milli/micro/nanosecond (fixed-length durations)
   angle        radian, degree, turn, arcminute, arcsecond, cycle, hertz
   solid_angle  steradian, square degree, spat
   geometry     length, area, volume
@@ -176,6 +205,7 @@ units/
   currency     dollar, cent, k$, M$ (same-currency only)
   count        each, dozen, gross
 quantities/
+  qtime        time-duration constructors (minutes, hours, days, ...)
   qangle       plane angle constructors, plus cycle and hertz (frequency)
   qsolidangle  solid angle quantity constructors
   qsi          SI base quantity constructors
@@ -194,12 +224,16 @@ notation/
   catalog      immutable symbol -> unit lookup table (Catalog)
   preset       prebuilt catalogs, one per unit package, plus all()
   parser       parse unit/quantity strings (parse_unit, parse_quantity)
+affine/        affine scales (AffineUn, Point) with temperature units
+logarithmic/   logarithmic scales (Level, Gain) with decibel/neper units
 examples/      runnable, self-checking examples
 docs/          design and roadmap notes
 ```
 
-> Temperature currently provides only the kelvin: affine units (°C, °F) need
-> offset support, which is planned alongside richer temperature semantics.
+> Linear `units/thermal` keeps only the kelvin and its linear derivatives.
+> Affine temperature points (°C, °F, °R) live in the separate `affine/` package,
+> and logarithmic levels/gains in `logarithmic/`, so `Un`/`Quantity` stay purely
+> multiplicative.
 
 ## Development
 
