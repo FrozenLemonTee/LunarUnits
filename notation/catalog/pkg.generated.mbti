@@ -1,0 +1,27 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/notation/catalog"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+pub struct Catalog {
+  entries : Map[String, @unit.Un]
+}
+pub fn Catalog::contains(Self, String) -> Bool
+pub fn Catalog::lookup(Self, String) -> @unit.Un?
+pub fn Catalog::merge(Self, Self) -> Self
+pub fn Catalog::new() -> Self
+pub fn Catalog::symbols(Self) -> Array[String]
+pub fn Catalog::with_all(Self, Array[(String, @unit.Un)]) -> Self
+pub fn Catalog::with_unit(Self, String, @unit.Un) -> Self
+
+// Type aliases
+
+// Traits
+

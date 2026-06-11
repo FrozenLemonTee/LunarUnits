@@ -17,6 +17,7 @@ Covered:
 - Rejection of dimensionally invalid operations (length + time).
 - Extension dimensions: information, angle, currency, count, frequency.
 - Formatting one quantity in ASCII, SI (Unicode) and LaTeX notations.
+- Resolving unit symbols through a preset catalog and extending it.
 
 Run them with:
 
