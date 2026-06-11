@@ -1,0 +1,83 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/logarithmic"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+}
+
+// Values
+pub fn dbm() -> LogUnit
+
+pub fn dbv() -> LogUnit
+
+pub fn dbw() -> LogUnit
+
+pub let decibel_field : LogScale
+
+pub let decibel_power : LogScale
+
+pub fn format_gain(Gain) -> String
+
+pub fn format_level(Level) -> String
+
+pub let neper : LogScale
+
+// Errors
+pub suberror LogError {
+  ScaleMismatch
+  ReferenceMismatch
+  IncompatibleDimension
+} derive(Eq)
+
+// Types and methods
+pub struct Gain {
+  value : Double
+  scale : LogScale
+}
+pub fn Gain::add(Self, Self) -> Self raise LogError
+pub fn Gain::from_ratio(Double, LogScale) -> Self
+pub fn Gain::negate(Self) -> Self
+pub fn Gain::new(Double, LogScale) -> Self
+pub fn Gain::ratio(Self) -> Double
+pub fn Gain::scale(Self) -> LogScale
+pub fn Gain::value(Self) -> Double
+pub impl Show for Gain
+
+pub struct Level {
+  value : Double
+  unit : LogUnit
+}
+pub fn Level::combine(Self, Self) -> Self raise LogError
+pub fn Level::from_linear(@quantity.Quantity, LogUnit) -> Self raise LogError
+pub fn Level::gain(Self, Self) -> Gain raise LogError
+pub fn Level::new(Double, LogUnit) -> Self
+pub fn Level::shift(Self, Gain) -> Self raise LogError
+pub fn Level::to_linear(Self) -> @quantity.Quantity
+pub fn Level::unit(Self) -> LogUnit
+pub fn Level::value(Self) -> Double
+pub impl Show for Level
+
+pub struct LogScale {
+  symbol : String
+  factor : Double
+  log_base : Double
+} derive(Eq)
+pub fn LogScale::factor(Self) -> Double
+pub fn LogScale::log_base(Self) -> Double
+pub fn LogScale::new(String, Double, Double) -> Self
+pub fn LogScale::symbol(Self) -> String
+
+pub struct LogUnit {
+  symbol : String
+  reference : @quantity.Quantity
+  scale : LogScale
+} derive(Eq)
+pub fn LogUnit::new(String, @quantity.Quantity, LogScale) -> Self
+pub fn LogUnit::reference(Self) -> @quantity.Quantity
+pub fn LogUnit::scale(Self) -> LogScale
+pub fn LogUnit::symbol(Self) -> String
+
+// Type aliases
+
+// Traits
+

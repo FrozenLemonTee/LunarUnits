@@ -1,0 +1,28 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/units/time"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Values
+pub let day : @unit.Un
+
+pub let hour : @unit.Un
+
+pub let microsecond : @unit.Un
+
+pub let millisecond : @unit.Un
+
+pub let minute : @unit.Un
+
+pub let nanosecond : @unit.Un
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

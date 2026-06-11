@@ -103,6 +103,42 @@ Reverse lookup (`unit -> preferred symbol`, for derived-unit recognition in the
 formatter), SI-prefix handling, and recombining multi-token catalog keys such
 as `km/h` are deferred.
 
+## Affine Boundary
+
+Non-linear scales must not pollute the multiplicative core, so `Un` carries no
+offset and absolute points live in a separate `affine/` package.
+
+- `AffineUn` is a generic affine unit `(symbol, base : Un, scale, offset)`
+  meaning `base_value = reading * scale + offset`. `Point` is an absolute reading
+  on such a unit.
+- The design follows the affine-space convention (as in boost.units and Pint):
+  a `Point` is a position and an interval is a vector. `point - point` yields an
+  interval, `point + interval` yields a point, and `point + point` /
+  `point * scalar` are intentionally not provided.
+- Crucially, an **interval is an ordinary linear `@quantity.Quantity`** on the
+  base dimension — no separate "delta unit" type — because the offset cancels.
+  Only the absolute point needs a dedicated type. This is what distinguishes an
+  absolute `20 °C` (293.15 K) from a `20 °C` interval (20 K): they are different
+  types.
+- `Point::to` (affine convert), `shift` (by an interval) and `difference`
+  (point − point) raise `DimensionMismatch` by delegating to `Quantity::to`;
+  `checked_*` variants return `Option`. `to_base` bridges to a linear `Quantity`.
+- The type is generic and user-extensible (`AffineUn::new` on any dimension);
+  temperature (`kelvin`, `celsius`, `fahrenheit`, `rankine`) is the shipped
+  preset. Affine units are not registered in `notation/catalog` and `°C`/`°F`
+  are not added to `units/thermal` (which stays linear, kelvin-only).
+- Logarithmic scales (dB/Np) follow the same out-of-core principle in the
+  `logarithmic/` package, but with their own `Level`/`Gain` types because the log
+  "gain" is not a plain `Quantity` (it carries a log scale and power/root-power
+  meaning). A `Level` is absolute (it owns a reference, e.g. dBm = 1 mW); a
+  `Gain` is a pure ratio. `Level::to_linear`/`from_linear` bridge to a
+  `Quantity`, `shift` applies a gain, `gain` is the difference of two levels, and
+  `combine` adds linear powers (20 dBm + 20 dBm ≈ 23 dBm). Power and root-power
+  are distinct `LogScale`s (factor 10 vs 20) and are never auto-converted;
+  cross-scale or cross-reference operations raise `LogError`. It depends on
+  `core/quantity` and the unit packages that supply reference quantities
+  (`watt`, `volt`), not on the core in reverse.
+
 ## Extension Boundary
 
 Extension dimensions should stay outside the SI core unless they are part of

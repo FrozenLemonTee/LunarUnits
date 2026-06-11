@@ -1,0 +1,15 @@
+// Time duration units: fixed multiples of the SI second. These are linear
+// (scale-only) units, used as ordinary `Quantity` durations. Absolute instants
+// ("time points") are a separate, affine concern handled generically by the
+// `affine` package. Calendar units (month and above) are intentionally excluded
+// because their length is not constant.
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/units/si",
+}
+
+// Doctests and black-box tests refer to the time dimension and build quantities.
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+  "FrozenLemonTee/LunarUnits/core/quantity",
+} for "test"

@@ -3,6 +3,10 @@
 The `units` area is reserved for built-in unit packages.
 
 - `si`: SI base units for the MVP.
+- `time`: fixed-length time durations (minute, hour, day, milli/micro/nanosecond)
+  as linear multiples of the second. Calendar units (month and up) are excluded
+  because their length is not constant; absolute instants are an affine concern
+  handled by the `affine` package.
 - `angle`: plane angle units such as radian, degree, turn, arcminute and
   arcsecond, plus `cycle` and `hertz` (cycles per second) in the angle/time
   dimension, so frequency and angular frequency share a dimension
