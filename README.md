@@ -28,7 +28,10 @@ type system.
 - Same-dimension conversion, and runtime rejection of dimensionally invalid
   operations.
 - `checked_*` APIs for non-raising addition, subtraction and conversion paths.
-- ASCII formatters for units and quantities, e.g. `m/s^2` and `9.8 m/s^2`.
+- Formatters for units and quantities in ASCII (`m/s^2`), SI/Unicode (`m/s²`)
+  and LaTeX (`\mathrm{m}/\mathrm{s}^{2}`) notations.
+- Immutable symbol catalogs (`notation/catalog`) with prebuilt per-domain
+  catalogs (`notation/preset`) for resolving and extending unit symbols.
 - Convenience quantity constructors for built-in unit domains.
 - Extension dimensions and common physical constants.
 - Every public API ships with a runnable documentation example.
@@ -46,6 +49,7 @@ import {
   "FrozenLemonTee/LunarUnits/core/quantity",
   "FrozenLemonTee/LunarUnits/units/si",
   "FrozenLemonTee/LunarUnits/constants/physics",
+  "FrozenLemonTee/LunarUnits/notation/preset",
   "FrozenLemonTee/LunarUnits/quantities/qgeometry",
   "FrozenLemonTee/LunarUnits/quantities/qinformation",
   "FrozenLemonTee/LunarUnits/quantities/qmechanics",
@@ -78,6 +82,10 @@ let load = @qmechanics.newtons(6.0)
 // Constants and extension dimensions are ordinary quantities too.
 let light_second = @physics.speed_of_light * @quantity.Quantity::new(1.0, @si.second)
 let memory = @qinformation.kibibytes(1.0)
+
+// Resolve unit symbols through a catalog (the basis for parsing and extension).
+let catalog = @preset.all()
+let newton_unit = catalog.lookup("N").unwrap() // the newton, from its symbol
 
 // Dimensionally invalid operations are rejected: `add`/`sub`/`to` raise
 // `DimensionMismatch` when the dimensions do not match. Use `checked_*`
@@ -113,8 +121,14 @@ layers, never the other way around.
    total algebraic composition; integer powers remain explicit via `.pow(n)`.
 
 Formatting is intentionally separate from `Show`: `Show` stays useful for debug
-diffs, while `format_unit` and `format_quantity` provide compact ASCII strings
-for user-facing display.
+diffs, while `format_unit`/`format_quantity` (and their `*_with` variants)
+render user-facing strings in ASCII, SI/Unicode or LaTeX notation.
+
+Symbol resolution lives in a separate `notation/` layer: `notation/catalog`
+provides an immutable `symbol -> unit` lookup table that never participates in
+core unit identity, and `notation/preset` ships one ready-made catalog per unit
+package (plus `all()` for the union). This is the foundation for a future
+parser and for user-defined unit symbols.
 
 Error handling follows a deliberate split: low-level *queries* and recoverable
 paths return `Option` (e.g. `Un::conversion_factor`,
@@ -168,6 +182,9 @@ quantities/
   qcount       discrete-count quantity constructors
 constants/
   physics      common physical constants as quantities
+notation/
+  catalog      immutable symbol -> unit lookup table (Catalog)
+  preset       prebuilt catalogs, one per unit package, plus all()
 examples/      runnable, self-checking examples
 docs/          design and roadmap notes
 ```

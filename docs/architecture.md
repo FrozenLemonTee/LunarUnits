@@ -65,9 +65,35 @@ functions:
 
 - `format_unit(unit)` returns compact ASCII unit notation such as `m/s^2`.
 - `format_quantity(quantity)` returns `<value> <unit>`, such as `9.8 m/s^2`.
+- `format_unit_with(unit, style)` and `format_quantity_with(quantity, style)`
+  render the same value in a `FormatStyle` of `Ascii`, `Si` (Unicode
+  superscripts and `·`, e.g. `m/s²`) or `Latex` (e.g. `\mathrm{m}/\mathrm{s}^{2}`).
 
-The initial formatter is deliberately ASCII-only. SI-superscript and LaTeX
-styles can be added later without changing the debug representation.
+The numerator/denominator split and SI ordering are style-independent and shared
+across styles; only symbol, exponent and separator rendering differ. None of
+this changes the debug `Show` representation.
+
+## Notation Boundary
+
+Symbol resolution lives in a separate `notation/` layer, kept out of the core
+model:
+
+- `notation/catalog` defines `Catalog`, an immutable `symbol -> unit` lookup
+  table. It is built with `new`/`with_unit`/`with_all`, queried with
+  `lookup` (returns `Option`)/`contains`/`symbols`, and combined with `merge`.
+  A catalog never participates in core unit identity: compatibility and
+  conversion stay governed by `Un`'s scale and dimension. It depends only on
+  `core/unit`.
+- `notation/preset` ships one prebuilt catalog per `units/*` package (`si`,
+  `geometry`, `mass`, `mechanics`, `fluid`, `thermal`, `electromagnetism`,
+  `angle`, `solid_angle`, `information`, `currency`, `count`), each covering all
+  of its package's units, plus `all()` for the collision-free union. This
+  package concentrates the dependency on the unit libraries so `notation/catalog`
+  stays decoupled from any particular unit set.
+
+The catalog is the forward (`symbol -> unit`) half needed to unblock a future
+parser. Reverse lookup (`unit -> preferred symbol`, for derived-unit
+recognition in the formatter) and SI-prefix handling are deferred.
 
 ## Extension Boundary
 

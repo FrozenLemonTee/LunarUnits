@@ -1,0 +1,42 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/notation/preset"
+
+import {
+  "FrozenLemonTee/LunarUnits/notation/catalog",
+}
+
+// Values
+pub fn all() -> @catalog.Catalog
+
+pub fn angle() -> @catalog.Catalog
+
+pub fn count() -> @catalog.Catalog
+
+pub fn currency() -> @catalog.Catalog
+
+pub fn electromagnetism() -> @catalog.Catalog
+
+pub fn fluid() -> @catalog.Catalog
+
+pub fn geometry() -> @catalog.Catalog
+
+pub fn information() -> @catalog.Catalog
+
+pub fn mass() -> @catalog.Catalog
+
+pub fn mechanics() -> @catalog.Catalog
+
+pub fn si() -> @catalog.Catalog
+
+pub fn solid_angle() -> @catalog.Catalog
+
+pub fn thermal() -> @catalog.Catalog
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

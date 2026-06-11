@@ -1,0 +1,11 @@
+// Symbol -> unit lookup table for parsing, formatting and user-defined unit
+// extensions. Depends only on the core unit layer; it never participates in
+// core unit identity (compatibility and conversion stay governed by `Un`).
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Black-box tests and doctests build units from dimensions directly.
+import {
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"

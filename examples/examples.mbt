@@ -155,3 +155,22 @@ test "format an acceleration in ASCII, SI and LaTeX" {
     "9.8 \\mathrm{m}/\\mathrm{s}^{2}",
   )
 }
+
+///|
+/// A catalog maps unit symbols to units — the basis for parsing and for
+/// user-defined extensions. The preset `all()` catalog spans every built-in
+/// unit package; catalogs are immutable, so extending one leaves the original
+/// untouched.
+test "resolve unit symbols through a preset catalog" {
+  let catalog = @preset.all()
+  // Known symbols from any domain resolve to a unit, e.g. force and frequency.
+  assert_true(catalog.lookup("N") is Some(_))
+  assert_true(catalog.lookup("Hz") is Some(_))
+  // Unknown symbols return None instead of raising.
+  assert_true(catalog.lookup("zzz") is None)
+  // Register your own symbol (here an alias for the newton); the receiver is
+  // unchanged, since catalogs are immutable.
+  let extended = catalog.with_unit("force", @mechanics.newton)
+  assert_true(extended.contains("force"))
+  assert_false(catalog.contains("force"))
+}

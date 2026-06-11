@@ -16,5 +16,6 @@ The `units` area is reserved for built-in unit packages.
   (cross-currency rates are injected by the caller, not built in).
 - `count`: discrete-count units such as each, dozen and gross.
 
-Quantity constructors live in `quantities/*`. Custom registration and broader
-engineering units belong to later milestones.
+Quantity constructors live in `quantities/*`. Symbol lookup for these units is
+provided by `notation/preset` (one catalog per package, plus `all()`). Broader
+engineering units and a string parser belong to later milestones.

@@ -1,0 +1,25 @@
+// Prebuilt catalogs of well-known unit symbols, one builder per `units/*`
+// package. This package concentrates the dependency on the unit libraries so
+// the generic `notation/catalog` type stays decoupled from any particular unit
+// set.
+import {
+  "FrozenLemonTee/LunarUnits/notation/catalog",
+  "FrozenLemonTee/LunarUnits/units/si",
+  "FrozenLemonTee/LunarUnits/units/geometry",
+  "FrozenLemonTee/LunarUnits/units/mass",
+  "FrozenLemonTee/LunarUnits/units/mechanics",
+  "FrozenLemonTee/LunarUnits/units/fluid",
+  "FrozenLemonTee/LunarUnits/units/thermal",
+  "FrozenLemonTee/LunarUnits/units/electromagnetism",
+  "FrozenLemonTee/LunarUnits/units/angle",
+  "FrozenLemonTee/LunarUnits/units/solid_angle",
+  "FrozenLemonTee/LunarUnits/units/information",
+  "FrozenLemonTee/LunarUnits/units/currency",
+  "FrozenLemonTee/LunarUnits/units/count",
+}
+
+// Black-box tests construct a custom unit to show extensibility.
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/core/dimension",
+} for "test"
