@@ -1,0 +1,54 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "FrozenLemonTee/LunarUnits/affine"
+
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/core/unit",
+}
+
+// Values
+pub let celsius : AffineUn
+
+pub let fahrenheit : AffineUn
+
+pub fn format_point(Point) -> String
+
+pub let kelvin : AffineUn
+
+pub let rankine : AffineUn
+
+// Errors
+
+// Types and methods
+pub struct AffineUn {
+  symbol : String
+  base : @unit.Un
+  scale : Double
+  offset : Double
+} derive(Eq)
+pub fn AffineUn::base(Self) -> @unit.Un
+pub fn AffineUn::new(String, @unit.Un, Double, Double) -> Self
+pub fn AffineUn::offset(Self) -> Double
+pub fn AffineUn::scale(Self) -> Double
+pub fn AffineUn::symbol(Self) -> String
+
+pub struct Point {
+  value : Double
+  unit : AffineUn
+}
+pub fn Point::checked_difference(Self, Self) -> @quantity.Quantity?
+pub fn Point::checked_shift(Self, @quantity.Quantity) -> Self?
+pub fn Point::checked_to(Self, AffineUn) -> Self?
+pub fn Point::difference(Self, Self) -> @quantity.Quantity raise @quantity.DimensionMismatch
+pub fn Point::new(Double, AffineUn) -> Self
+pub fn Point::shift(Self, @quantity.Quantity) -> Self raise @quantity.DimensionMismatch
+pub fn Point::to(Self, AffineUn) -> Self raise @quantity.DimensionMismatch
+pub fn Point::to_base(Self) -> @quantity.Quantity
+pub fn Point::unit(Self) -> AffineUn
+pub fn Point::value(Self) -> Double
+pub impl Show for Point
+
+// Type aliases
+
+// Traits
+

@@ -1,0 +1,10 @@
+// Affine scales: absolute points whose conversion is value*scale + offset
+// (e.g. temperature). Affine units are NOT part of the multiplicative unit
+// algebra; the generic `AffineUn`/`Point` types keep `Un`/`Quantity` linear and
+// only bridge to them at explicit boundaries. Temperature units are shipped as
+// presets, but the mechanism is generic and user-extensible.
+import {
+  "FrozenLemonTee/LunarUnits/core/unit",
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/units/si",
+}
