@@ -1,0 +1,14 @@
+// Logarithmic scales: levels (dBm, dBW, dBV ...) and gains (dB, Np). Like the
+// affine package, these are non-linear and kept out of the multiplicative core;
+// they bridge to linear `Quantity` values only at explicit boundaries
+// (`to_linear` / `from_linear`).
+//
+// Following Unitful.jl: a `Level` is absolute and carries a reference; a `Gain`
+// is a pure ratio. Power vs root-power (field) scales are distinct (factor 10 vs
+// 20) and never auto-converted into each other.
+import {
+  "FrozenLemonTee/LunarUnits/core/quantity",
+  "FrozenLemonTee/LunarUnits/units/mechanics",
+  "FrozenLemonTee/LunarUnits/units/electromagnetism",
+  "moonbitlang/core/math",
+}
