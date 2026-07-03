@@ -4,6 +4,8 @@
 
 **English** | [简体中文](README_zh.md)
 
+[Documentation](https://frozenlemontee.github.io/LunarUnits-docs/)
+
 LunarUnits is a runtime dimension-checked physical quantity and unit system for
 [MoonBit](https://www.moonbitlang.com). It helps engineering, scientific,
 teaching and data-processing code avoid unit errors by modelling dimensions and

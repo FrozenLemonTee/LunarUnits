@@ -4,6 +4,8 @@
 
 [English](README.md) | **简体中文**
 
+[在线文档](https://frozenlemontee.github.io/LunarUnits-docs/)
+
 LunarUnits 是一个面向 [MoonBit](https://www.moonbitlang.com) 的运行时量纲检查物理量与单位系统。它通过显式建模量纲与单位换算，帮助工程计算、科学计算、教学和数据处理代码避免单位错误。
 
 单位错误是科学与工程计算中常见的 bug 来源。LunarUnits 为每个数值附带单位，在运算时检查量纲一致性，并拒绝无意义的组合（例如把长度加到时间上），而不是悄悄产生错误的数字。MVP 阶段的检查发生在运行时，而不是通过编译期量纲类型系统完成。
