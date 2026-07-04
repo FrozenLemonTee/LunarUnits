@@ -64,5 +64,5 @@ scope — their units are not fixed-length, so they are not a simple affine scal
 Conversions through the 5/9 factor (Fahrenheit/Rankine) are floating-point and
 not bit-exact; compare with a tolerance.
 
-Logarithmic scales (decibel, neper) are a planned follow-up using the same
-point-vs-difference idea, but with their own `Level`/`Gain` types.
+Logarithmic scales (decibel, neper) are handled separately by the
+`logarithmic` package, which uses its own `Level` and `Gain` types.

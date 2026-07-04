@@ -1,8 +1,10 @@
 # Unit Libraries
 
-The `units` area is reserved for built-in unit packages.
+The `units` area contains built-in linear unit packages. Every exported unit is
+an ordinary `@unit.Un`; quantity constructors live separately in
+`quantities/*`.
 
-- `si`: SI base units for the MVP.
+- `si`: SI base units.
 - `time`: fixed-length time durations (minute, hour, day, milli/micro/nanosecond)
   as linear multiples of the second. Calendar units (month and up) are excluded
   because their length is not constant; absolute instants are an affine concern
@@ -22,5 +24,6 @@ The `units` area is reserved for built-in unit packages.
 
 Quantity constructors live in `quantities/*`. Symbol lookup for these units is
 provided by `notation/preset` (one catalog per package, plus `all()`), and
-`notation/parser` parses unit/quantity strings on top of a catalog. Broader
-engineering units belong to later milestones.
+`notation/parser` parses unit/quantity strings on top of a catalog. Non-linear
+scales such as Celsius and decibels live in `affine` and `logarithmic`, not in
+linear unit packages.

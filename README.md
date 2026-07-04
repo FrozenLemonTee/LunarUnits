@@ -6,6 +6,9 @@
 
 [Documentation](https://frozenlemontee.github.io/LunarUnits-docs/)
 
+For a guided overview, cookbook examples, design notes and OSC2026 review
+entry points, start from the online documentation site.
+
 LunarUnits is a runtime dimension-checked physical quantity and unit system for
 [MoonBit](https://www.moonbitlang.com). It helps engineering, scientific,
 teaching and data-processing code avoid unit errors by modelling dimensions and
