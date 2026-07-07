@@ -15,13 +15,16 @@ checklist below.
 4. From a clean checkout on `master`, run the pre-publish checks:
 
    ```
-   moon info
+   moon check --target all
    moon fmt
-   moon test
+   git diff --exit-code
+   moon info
+   git diff --exit-code
+   moon test --target all
    ```
 
-   `moon info` and `moon fmt` must leave the working tree unchanged (CI enforces
-   the same), and all tests must pass.
+   `moon fmt` and `moon info` must leave the working tree unchanged (CI enforces
+   the same), and all checks must pass.
 5. Publish:
 
    ```

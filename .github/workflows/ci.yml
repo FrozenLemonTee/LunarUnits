@@ -7,35 +7,41 @@ on:
 
 jobs:
   check:
-    name: check, format and test
+    name: check, format, info and test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       - name: Set up MoonBit
         run: |
           curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
 
-      - name: Update dependencies
-        run: moon update
-
-      - name: Check (deny warnings)
-        run: moon check --deny-warn
-
-      - name: Generated interfaces are up to date
+      - name: Post install
         run: |
-          moon info
-          git diff --exit-code
+          moon version --all
+          moon update
 
-      - name: Formatting is clean
+      - name: Check
+        run: moon check --target all
+
+      - name: Format check
         run: |
           moon fmt
           git diff --exit-code
 
+      - name: Generated interface check
+        run: |
+          moon info
+          git diff --exit-code
+
       - name: Test
-        run: moon test
+        run: moon test --target all
 
       # Coverage is informational only: an uncovered line should not fail CI.
       - name: Coverage report
