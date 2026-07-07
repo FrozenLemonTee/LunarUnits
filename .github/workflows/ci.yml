@@ -30,15 +30,13 @@ jobs:
       - name: Check
         run: moon check --target all
 
-      - name: Format check
-        run: |
-          moon fmt
-          git diff --exit-code
-
       - name: Generated interface check
         run: |
           moon info
           git diff --exit-code
+
+      - name: Format check
+        run: moon fmt --check
 
       - name: Test
         run: moon test --target all

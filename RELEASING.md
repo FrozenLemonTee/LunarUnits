@@ -16,15 +16,14 @@ checklist below.
 
    ```
    moon check --target all
-   moon fmt
-   git diff --exit-code
    moon info
    git diff --exit-code
+   moon fmt --check
    moon test --target all
    ```
 
-   `moon fmt` and `moon info` must leave the working tree unchanged (CI enforces
-   the same), and all checks must pass.
+   `moon info` must leave the working tree unchanged, `moon fmt --check` must pass
+   (CI enforces the same), and all checks must pass.
 5. Publish:
 
    ```
