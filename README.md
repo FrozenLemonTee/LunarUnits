@@ -53,66 +53,64 @@ type system.
 moon add FrozenLemonTee/LunarUnits
 ```
 
-Then import the packages you need in your `moon.pkg`, for example:
+In a standard project created with `moon new`, add the packages below to
+`cmd/main/moon.pkg` (keep its existing `options("is-main": true)` block):
 
 ```
 import {
   "FrozenLemonTee/LunarUnits/core/quantity",
   "FrozenLemonTee/LunarUnits/units/si",
-  "FrozenLemonTee/LunarUnits/constants/physics",
   "FrozenLemonTee/LunarUnits/notation/preset",
   "FrozenLemonTee/LunarUnits/notation/parser",
-  "FrozenLemonTee/LunarUnits/affine",
-  "FrozenLemonTee/LunarUnits/logarithmic",
   "FrozenLemonTee/LunarUnits/quantities/qgeometry",
-  "FrozenLemonTee/LunarUnits/quantities/qinformation",
-  "FrozenLemonTee/LunarUnits/quantities/qmechanics",
 }
 ```
 
 ## Quick start
 
+Replace `cmd/main/main.mbt` with:
+
 ```moonbit
-// Build quantities with convenience constructors or directly from a unit.
-let distance = @qgeometry.meters(100.0)
-let time = @quantity.Quantity::new(10.0, @si.second)
+fn main {
+  // Build quantities with convenience constructors or directly from a unit.
+  let distance = @qgeometry.meters(100.0)
+  let time = @quantity.Quantity::new(10.0, @si.second)
 
-// Arithmetic composes units automatically.
-let speed = distance / time // 10 m/s
-let speed_text = @quantity.format_quantity(speed) // "10 m/s"
+  // Arithmetic composes units automatically.
+  let speed = distance / time
+  println(@quantity.format_quantity(speed))
 
-// Newton's second law: F = m * a.
-let mass = @quantity.Quantity::new(2.0, @si.kilogram)
-let acceleration = @quantity.Quantity::new(3.0, @si.meter / @si.second.pow(2))
-let force = mass * acceleration // 6 N
+  // The checked API is convenient in `main`: invalid conversions return None.
+  let in_meters = @qgeometry
+    .kilometers(2.0)
+    .checked_to(@si.meter)
+    .unwrap()
+  println(@quantity.format_quantity(in_meters))
 
-// Same-dimension conversion keeps the physical magnitude.
-let in_meters = @qgeometry.kilometers(2.0).to(@si.meter)
-// in_meters.value() == 2000.0
+  // Parse a complete quantity without introducing an unhandled error effect.
+  let catalog = @preset.all()
+  let gravity = @parser
+    .parse_quantity_opt(catalog, "9.8 m/s^2")
+    .unwrap()
+  println(@quantity.format_quantity(gravity))
 
-// Domain constructors are just shorthand for Quantity::new(value, unit).
-let load = @qmechanics.newtons(6.0)
-
-// Constants and extension dimensions are ordinary quantities too.
-let light_second = @physics.speed_of_light * @quantity.Quantity::new(1.0, @si.second)
-let memory = @qinformation.kibibytes(1.0)
-
-// Resolve unit symbols through a catalog, or parse whole expressions.
-let catalog = @preset.all()
-let newton_unit = catalog.lookup("N").unwrap() // the newton, from its symbol
-let accel_unit = @parser.parse_unit(catalog, "m/s^2") // composed from a string
-let g = @parser.parse_quantity(catalog, "9.8 m/s^2") // value 9.8, unit m/s^2
-
-// Temperature is an affine scale: absolute points convert with an offset.
-let body = @affine.Point::new(37.0, @affine.celsius)
-let body_k = body.to_base() // 310.15 K, as a linear Quantity
-
-// Dimensionally invalid operations are rejected: `add`/`sub`/`to` raise
-// `DimensionMismatch` when the dimensions do not match. Use `checked_*`
-// variants when you prefer `None` over raising.
-let total = distance.add(time) // raises DimensionMismatch
-let maybe_total = distance.checked_add(time) // None
+  // Dimensionally invalid addition is rejected without terminating the program.
+  println(distance.checked_add(time) is None)
+}
 ```
+
+Running `moon run cmd/main` prints:
+
+```text
+10 m/s
+2000 m
+9.8 m/s^2
+true
+```
+
+The strict `add`/`sub`/`to` and `parse_*` APIs raise typed errors when an
+operation is invalid. Use them in functions that handle or propagate those
+errors; use `checked_*` and `*_opt` in non-raising entry points such as `main`.
 
 More worked examples (speed, acceleration, force, energy, conversion and
 invalid-operation rejection) live in [`examples/`](examples/examples.mbt) and
