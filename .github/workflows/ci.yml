@@ -7,8 +7,13 @@ on:
 
 jobs:
   check:
-    name: check, format, info and test
-    runs-on: ubuntu-latest
+    name: check, format, info and test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
     permissions:
       contents: read
     steps:
@@ -17,10 +22,19 @@ jobs:
         with:
           persist-credentials: false
 
-      - name: Set up MoonBit
+      - name: Set up MoonBit (Unix)
+        if: runner.os != 'Windows'
         run: |
           curl -fsSL https://cli.moonbitlang.com/install/unix.sh | bash
           echo "$HOME/.moon/bin" >> "$GITHUB_PATH"
+
+      - name: Set up MoonBit (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+          Invoke-RestMethod https://cli.moonbitlang.com/install/powershell.ps1 | Invoke-Expression
+          "$HOME\.moon\bin" | Out-File -FilePath $env:GITHUB_PATH -Append
 
       - name: Post install
         run: |
@@ -28,7 +42,7 @@ jobs:
           moon update
 
       - name: Check
-        run: moon check --target all
+        run: moon check --deny-warn --target all
 
       - name: Generated interface check
         run: |
@@ -36,13 +50,16 @@ jobs:
           git diff --exit-code
 
       - name: Format check
-        run: moon fmt --check
+        run: |
+          moon fmt
+          git diff --exit-code
 
       - name: Test
-        run: moon test --target all
+        run: moon test --deny-warn --target all
 
       # Coverage is informational only: an uncovered line should not fail CI.
       - name: Coverage report
+        continue-on-error: true
         run: |
           moon test --enable-coverage
-          moon coverage analyze || true
+          moon coverage analyze
